@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Engineer Portfolio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 60px 0; text-align: center; }
+        h1 { font-size: 3rem; margin-bottom: 10px; }
+        .subtitle { font-size: 1.2rem; opacity: 0.9; }
+        .project { background: white; margin: 40px 0; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .project h2 { color: #4CAF50; margin-bottom: 20px; font-size: 2rem; }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+        .tech { background: #e3f2fd; color: #1976d2; padding: 5px 12px; border-radius: 20px; font-size: 0.9rem; }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0; }
+        .metric { background: #f8f9fa; padding: 20px; border-radius: 10px; text-align: center; }
+        .metric-value { font-size: 2rem; font-weight: bold; color: #4CAF50; }
+        .screenshots { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0; }
+        .screenshot { border: 1px solid #ddd; border-radius: 10px; overflow: hidden; }
+        .screenshot img { width: 100%; height: 200px; object-fit: cover; }
+        .screenshot-caption { padding: 15px; background: #f8f9fa; font-size: 0.9rem; }
+        .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin: 40px 0; }
+        .skill-category { background: #f8f9fa; padding: 25px; border-radius: 10px; }
+        .skill-category h3 { color: #333; margin-bottom: 15px; }
+        .skill-list { list-style: none; }
+        .skill-list li { padding: 5px 0; }
+        .skill-list li:before { content: "✅ "; color: #4CAF50; }
+        .cost-summary { background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 30px; border-radius: 15px; text-align: center; margin: 40px 0; }
+        .github-link { display: inline-block; background: #333; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; margin: 10px; }
+        .github-link:hover { background: #555; }
+        footer { background: #333; color: white; text-align: center; padding: 40px 0; margin-top: 60px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🚀 DevOps Engineer Portfolio</h1>
+            <p class="subtitle">Enterprise-Level Cloud Infrastructure & Automation</p>
+            <p>Demonstrating 16+ Technologies • Total Cost: Under $1 • 4 Hours Development</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="project">
+            <h2>🛒 Project 1: CloudNative E-Commerce Platform</h2>
+            <p><strong>Duration:</strong> 2 hours deployment + documentation | <strong>Cost:</strong> $0.42</p>
+            
+            <div class="tech-stack">
+                <span class="tech">AWS EKS</span>
+                <span class="tech">Terraform</span>
+                <span class="tech">AWS Lambda</span>
+                <span class="tech">AWS S3</span>
+                <span class="tech">AWS Secrets Manager</span>
+                <span class="tech">AWS CloudWatch</span>
+                <span class="tech">Kubernetes</span>
+                <span class="tech">Docker</span>
+                <span class="tech">React</span>
+                <span class="tech">Node.js</span>
+                <span class="tech">GitHub Actions</span>
+            </div>
+
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-value">30min</div>
+                    <div>Deployment Time</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">15+</div>
+                    <div>AWS Resources</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">100%</div>
+                    <div>Infrastructure as Code</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">$0.42</div>
+                    <div>Total Cost</div>
+                </div>
+            </div>
+
+            <div class="screenshots">
+                <div class="screenshot">
+                    <img src="screenshots/01-aws-console-overview.png" alt="AWS Console">
+                    <div class="screenshot-caption">AWS Console - All services active</div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/02-eks-cluster.png" alt="EKS Cluster">
+                    <div class="screenshot-caption">EKS Cluster - Production ready</div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/04-lambda-function.png" alt="Lambda Function">
+                    <div class="screenshot-caption">Lambda Function - Serverless processing</div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/08-cloudwatch-metrics.png" alt="CloudWatch">
+                    <div class="screenshot-caption">CloudWatch - Custom metrics</div>
+                </div>
+            </div>
+
+            <h3>🎯 Key Achievements:</h3>
+            <ul class="skill-list">
+                <li>Deployed full-stack application on Kubernetes</li>
+                <li>Implemented serverless order processing with Lambda</li>
+                <li>Automated infrastructure provisioning with Terraform</li>
+                <li>Integrated secure secrets management</li>
+                <li>Set up comprehensive monitoring with CloudWatch</li>
+                <li>Demonstrated cost optimization with spot instances</li>
+            </ul>
+
+            <a href="https://github.com/username/cloudnative-ecommerce" class="github-link">View Source Code</a>
+        </div>
+
+        <div class="project">
+            <h2>📊 Project 2: Microservices Monitoring System</h2>
+            <p><strong>Duration:</strong> 2 hours deployment + documentation | <strong>Cost:</strong> $0.38</p>
+            
+            <div class="tech-stack">
+                <span class="tech">Kubernetes</span>
+                <span class="tech">ActiveMQ</span>
+                <span class="tech">Grafana</span>
+                <span class="tech">Prometheus</span>
+                <span class="tech">Loki</span>
+                <span class="tech">AWS CloudWatch</span>
+                <span class="tech">Docker</span>
+                <span class="tech">Node.js</span>
+                <span class="tech">Winston Logging</span>
+            </div>
+
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-value">3</div>
+                    <div>Microservices</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">100%</div>
+                    <div>Observability</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">Real-time</div>
+                    <div>Log Aggregation</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">$0.38</div>
+                    <div>Total Cost</div>
+                </div>
+            </div>
+
+            <div class="screenshots">
+                <div class="screenshot">
+                    <img src="screenshots/11-microservices-pods.png" alt="Microservices">
+                    <div class="screenshot-caption">Microservices - All pods running</div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/12-activemq-console.png" alt="ActiveMQ">
+                    <div class="screenshot-caption">ActiveMQ - Message queue management</div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/14-grafana-dashboard.png" alt="Grafana">
+                    <div class="screenshot-caption">Grafana - Custom dashboards</div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/15-loki-logs.png" alt="Loki Logs">
+                    <div class="screenshot-caption">Loki - Structured log aggregation</div>
+                </div>
+            </div>
+
+            <h3>🎯 Key Achievements:</h3>
+            <ul class="skill-list">
+                <li>Built scalable microservices architecture</li>
+                <li>Implemented message queuing with ActiveMQ</li>
+                <li>Set up comprehensive monitoring with Grafana + Prometheus</li>
+                <li>Configured centralized logging with Loki</li>
+                <li>Created custom business metrics and dashboards</li>
+                <li>Demonstrated service-to-service communication</li>
+            </ul>
+
+            <a href="https://github.com/username/microservices-monitoring" class="github-link">View Source Code</a>
+        </div>
+
+        <div class="cost-summary">
+            <h2>💰 Portfolio Investment Summary</h2>
+            <div class="metrics">
+                <div class="metric" style="background: rgba(255,255,255,0.2); color: white;">
+                    <div class="metric-value" style="color: white;">$0.80</div>
+                    <div>Total AWS Cost</div>
+                </div>
+                <div class="metric" style="background: rgba(255,255,255,0.2); color: white;">
+                    <div class="metric-value" style="color: white;">4 Hours</div>
+                    <div>Development Time</div>
+                </div>
+                <div class="metric" style="background: rgba(255,255,255,0.2); color: white;">
+                    <div class="metric-value" style="color: white;">16+</div>
+                    <div>Technologies</div>
+                </div>
+                <div class="metric" style="background: rgba(255,255,255,0.2); color: white;">
+                    <div class="metric-value" style="color: white;">$95k+</div>
+                    <div>Skills Demonstrated</div>
+                </div>
+            </div>
+            <p style="font-size: 1.2rem; margin-top: 20px;">
+                <strong>ROI: 118,750x return on investment</strong><br>
+                Demonstrating enterprise-level DevOps capabilities for under $1
+            </p>
+        </div>
+
+        <div class="skills">
+            <div class="skill-category">
+                <h3>🏗 Infrastructure & Cloud</h3>
+                <ul class="skill-list">
+                    <li>Amazon EKS (Kubernetes)</li>
+                    <li>Terraform (Infrastructure as Code)</li>
+                    <li>AWS Lambda (Serverless)</li>
+                    <li>AWS S3 (Object Storage)</li>
+                    <li>AWS Secrets Manager</li>
+                    <li>AWS CloudWatch</li>
+                    <li>AWS Systems Manager</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h3>🐳 Containers & Orchestration</h3>
+                <ul class="skill-list">
+                    <li>Docker (Containerization)</li>
+                    <li>Kubernetes (Orchestration)</li>
+                    <li>Helm (Package Management)</li>
+                    <li>Container Security</li>
+                    <li>Multi-stage Builds</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h3>📊 Monitoring & Observability</h3>
+                <ul class="skill-list">
+                    <li>Grafana (Visualization)</li>
+                    <li>Prometheus (Metrics)</li>
+                    <li>Loki (Log Aggregation)</li>
+                    <li>Custom Dashboards</li>
+                    <li>Structured Logging</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h3>🔄 CI/CD & Automation</h3>
+                <ul class="skill-list">
+                    <li>GitHub Actions</li>
+                    <li>Automated Testing</li>
+                    <li>Container Registry (ECR)</li>
+                    <li>Deployment Automation</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h3>📡 Messaging & Communication</h3>
+                <ul class="skill-list">
+                    <li>ActiveMQ (Message Queuing)</li>
+                    <li>REST APIs</li>
+                    <li>Microservices Architecture</li>
+                    <li>Service Discovery</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h3>💻 Development & Languages</h3>
+                <ul class="skill-list">
+                    <li>Node.js & Express</li>
+                    <li>React & TypeScript</li>
+                    <li>JavaScript ES6+</li>
+                    <li>RESTful API Design</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <h3>🎯 Ready for DevOps Engineering Roles</h3>
+            <p>This portfolio demonstrates production-ready skills in cloud infrastructure, automation, and monitoring.</p>
+            <p>All projects are fully documented, reproducible, and cost-optimized.</p>
+            <p style="margin-top: 20px;">
+                <a href="mailto:your.email@example.com" class="github-link">Contact Me</a>
+                <a href="https://linkedin.com/in/yourprofile" class="github-link">LinkedIn</a>
+                <a href="https://github.com/yourusername" class="github-link">GitHub</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
