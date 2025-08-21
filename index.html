@@ -39,7 +39,7 @@
         <div class="container">
             <h1>🚀 DevOps Engineer Portfolio</h1>
             <p class="subtitle">Enterprise-Level Cloud Infrastructure & Automation</p>
-            <p>9 Complete Projects • 55+ Technologies • 11.25 Hours Development</p>
+            <p>10 Complete Projects • 55+ Technologies • 12.25 Hours Development</p>
         </div>
     </header>
 
@@ -475,7 +475,75 @@
         </div>
 
         <div class="project">
-            <h2>🔄 Project 7: GitOps Continuous Deployment with ArgoCD</h2>
+            <h2>🏢 Project 7: Terraform Multi-Environment Infrastructure</h2>
+            <p><strong>Duration:</strong> 30 minutes setup + documentation | <strong>Cost:</strong> $0.00</p>
+            
+            <div class="tech-stack">
+                <span class="tech">Terraform</span>
+                <span class="tech">AWS</span>
+                <span class="tech">Infrastructure as Code</span>
+                <span class="tech">Multi-Environment</span>
+                <span class="tech">Terraform Modules</span>
+                <span class="tech">HCL</span>
+                <span class="tech">Multi-Region</span>
+                <span class="tech">VPC</span>
+                <span class="tech">EC2</span>
+                <span class="tech">Automation</span>
+            </div>
+
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-value">3</div>
+                    <div>Environments</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">3</div>
+                    <div>AWS Regions</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">45+</div>
+                    <div>Resources Planned</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">$0.00</div>
+                    <div>Total Cost</div>
+                </div>
+            </div>
+
+            <div class="screenshots">
+                <div class="screenshot">
+                    <img src="screenshots/terraform-init.png" alt="Terraform Init">
+                    <div class="screenshot-caption">Terraform Init - Provider download and initialization<br><small>AWS provider successfully downloaded and backend initialized</small></div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/terraform-validate.png" alt="Terraform Validate">
+                    <div class="screenshot-caption">Terraform Validate - Configuration syntax validation<br><small>All configuration files validated successfully with no errors</small></div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/terraform-plan.png" alt="Terraform Plan">
+                    <div class="screenshot-caption">Terraform Plan - Infrastructure planning and resource graph<br><small>45+ resources planned across 3 environments with dependency resolution</small></div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/terraform-structure.png" alt="Project Structure">
+                    <div class="screenshot-caption">Project Structure - Modular Terraform organization<br><small>Clean separation of environments, modules, and configuration files</small></div>
+                </div>
+            </div>
+
+            <h3>🎯 Key Achievements:</h3>
+            <ul class="skill-list">
+                <li>Built multi-environment infrastructure with Terraform modules</li>
+                <li>Implemented Infrastructure as Code (IaC) best practices</li>
+                <li>Created reusable Terraform modules for consistent deployments</li>
+                <li>Demonstrated multi-region AWS architecture (us-east-1, us-west-2, eu-west-1)</li>
+                <li>Established environment-specific resource sizing and configuration</li>
+                <li>Showcased enterprise-level infrastructure automation patterns</li>
+            </ul>
+
+            <a href="https://github.com/username/terraform-multicloud" class="github-link">View Source Code</a>
+        </div>
+
+        <div class="project">
+            <h2>🔄 Project 8: GitOps Continuous Deployment with ArgoCD</h2>
             <p><strong>Duration:</strong> 1 hour setup + documentation | <strong>Cost:</strong> $0.00</p>
             
             <div class="tech-stack">
@@ -483,8 +551,8 @@
                 <span class="tech">GitOps</span>
                 <span class="tech">Kubernetes</span>
                 <span class="tech">Kind</span>
-                <span class="tech">Kustomize</span>
-                <span class="tech">YAML</span>
+                <span class="tech">GitHub Actions</span>
+                <span class="tech">CI/CD Pipeline</span>
                 <span class="tech">Continuous Deployment</span>
                 <span class="tech">Automated Sync</span>
                 <span class="tech">Self-Healing</span>
@@ -512,34 +580,54 @@
 
             <div class="screenshots">
                 <div class="screenshot">
-                    <img src="screenshots/argocd-dashboard.png" alt="ArgoCD Dashboard">
-                    <div class="screenshot-caption">ArgoCD Dashboard - GitOps application management<br><small>Main interface showing application sync status and health monitoring</small></div>
+                    <img src="screenshots/kind-cluster-creation-success.png" alt="Kind Cluster Creation">
+                    <div class="screenshot-caption">Kind Cluster - Local Kubernetes setup<br><small>Terminal showing successful Kind cluster creation for GitOps demo</small></div>
                 </div>
                 <div class="screenshot">
-                    <img src="screenshots/argocd-app-details.png" alt="Application Details">
-                    <div class="screenshot-caption">Application Details - Kubernetes resource topology<br><small>Detailed view of deployed resources and their relationships</small></div>
+                    <img src="screenshots/argocd-installation-progress.png" alt="ArgoCD Installation">
+                    <div class="screenshot-caption">ArgoCD Installation - GitOps platform setup<br><small>Installing ArgoCD components into Kubernetes cluster</small></div>
                 </div>
                 <div class="screenshot">
-                    <img src="screenshots/argocd-sync-history.png" alt="Sync History">
-                    <div class="screenshot-caption">Sync History - Deployment timeline and rollback capability<br><small>Complete audit trail of all deployments with rollback options</small></div>
+                    <img src="screenshots/argocd-pods-running.png" alt="ArgoCD Pods">
+                    <div class="screenshot-caption">ArgoCD Pods - All services running<br><small>All ArgoCD components successfully deployed and healthy</small></div>
                 </div>
                 <div class="screenshot">
-                    <img src="screenshots/argocd-deployed-pods.png" alt="Deployed Pods">
-                    <div class="screenshot-caption">Kubernetes Pods - Live application instances<br><small>Terminal showing successfully deployed pods via GitOps workflow</small></div>
+                    <img src="screenshots/argocd-login-page.png" alt="ArgoCD Login">
+                    <div class="screenshot-caption">ArgoCD UI - Login interface<br><small>Web interface for GitOps application management</small></div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/argocd-dashboard-empty.png" alt="ArgoCD Dashboard">
+                    <div class="screenshot-caption">ArgoCD Dashboard - Application management<br><small>Main interface ready for GitOps application deployment</small></div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/github-repo-creation.png" alt="GitHub Repository">
+                    <div class="screenshot-caption">GitHub Repository - GitOps source of truth<br><small>Git repository containing Kubernetes manifests and CI/CD pipeline</small></div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/argocd-simple-app-synced.png" alt="Application Synced">
+                    <div class="screenshot-caption">Application Synced - GitOps deployment success<br><small>ArgoCD showing application successfully synced from Git repository</small></div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/argocd-tree-view-deployment.png" alt="Tree View">
+                    <div class="screenshot-caption">Resource Tree - Kubernetes topology<br><small>Detailed view of deployed resources and their relationships</small></div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/after-scaling-3-pods.png" alt="Scaled Pods">
+                    <div class="screenshot-caption">GitOps Scaling - Automated deployment<br><small>Application automatically scaled from 2 to 3 pods via Git commit</small></div>
                 </div>
             </div>
 
             <h3>🎯 Key Achievements:</h3>
             <ul class="skill-list">
-                <li>Implemented GitOps workflow with ArgoCD for automated deployments</li>
-                <li>Built declarative configuration management with Git as source of truth</li>
-                <li>Created self-healing infrastructure with automatic drift correction</li>
-                <li>Demonstrated multi-environment deployment strategies</li>
-                <li>Integrated Kustomize for environment-specific configurations</li>
-                <li>Established complete audit trail and rollback capabilities</li>
+                <li>Implemented complete GitOps workflow with ArgoCD for automated deployments</li>
+                <li>Built CI/CD pipeline with GitHub Actions for validation and testing</li>
+                <li>Created declarative configuration management with Git as single source of truth</li>
+                <li>Demonstrated self-healing infrastructure with automatic drift correction</li>
+                <li>Established GitOps best practices with automated sync and rollback capabilities</li>
+                <li>Integrated Kubernetes cluster management with Kind for local development</li>
             </ul>
 
-            <a href="https://github.com/username/gitops-argocd" class="github-link">View Source Code</a>
+            <a href="https://github.com/Buik1/gitops-argocd" class="github-link">View Source Code</a>
         </div>
 
         <div class="project">
@@ -596,7 +684,7 @@
                     <div class="screenshot-caption">Service Mesh Dashboard - Traffic and security metrics<br><small>Management interface showing mesh status and performance</small></div>
                 </div>
                 <div class="screenshot">
-                    <img src="screenshots/istio-containers.png" alt="Istio Containers">
+                    <img src="screenshots/istio-container.png" alt="Istio Containers">
                     <div class="screenshot-caption">Container Architecture - Microservices deployment<br><small>Docker containers showing service mesh microservices architecture</small></div>
                 </div>
             </div>
@@ -614,6 +702,78 @@
             <a href="https://github.com/username/istio-service-mesh" class="github-link">View Source Code</a>
         </div>
 
+        <div class="project">
+            <h2>🔍 Project 10: ELK Stack Centralized Logging</h2>
+            <p><strong>Duration:</strong> 1 hour setup + documentation | <strong>Cost:</strong> $0.00</p>
+            
+            <div class="tech-stack">
+                <span class="tech">ELK Stack</span>
+                <span class="tech">Elasticsearch</span>
+                <span class="tech">Logstash</span>
+                <span class="tech">Kibana</span>
+                <span class="tech">Filebeat</span>
+                <span class="tech">Docker Compose</span>
+                <span class="tech">Log Processing</span>
+                <span class="tech">Observability</span>
+                <span class="tech">Real-time Analytics</span>
+                <span class="tech">Centralized Logging</span>
+            </div>
+
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-value">4</div>
+                    <div>ELK Components</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">Real-time</div>
+                    <div>Log Processing</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">100%</div>
+                    <div>Log Coverage</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">$0.00</div>
+                    <div>Total Cost</div>
+                </div>
+            </div>
+
+            <div class="screenshots">
+                <div class="screenshot">
+                    <img src="screenshots/elk-kibana-dashboard.png" alt="Kibana Dashboard">
+                    <div class="screenshot-caption">Kibana Dashboard - Centralized log management interface<br><small>Main dashboard showing log analytics and real-time monitoring</small></div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/elk-log-discovery.png" alt="Log Discovery">
+                    <div class="screenshot-caption">Log Discovery - Real-time log streaming and filtering<br><small>Live log exploration with advanced search and filtering capabilities</small></div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/elk-visualizations.png" alt="ELK Visualizations">
+                    <div class="screenshot-caption">Data Visualizations - Charts and analytics<br><small>Custom charts showing error rates, response times, and traffic patterns</small></div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/elk-elasticsearch-health.png" alt="Elasticsearch Health">
+                    <div class="screenshot-caption">Elasticsearch Cluster - Health and performance metrics<br><small>Cluster status showing indexing performance and search capabilities</small></div>
+                </div>
+                <div class="screenshot">
+                    <img src="screenshots/elk-docker-services.png" alt="ELK Services">
+                    <div class="screenshot-caption">Docker Services - Complete ELK stack running<br><small>All ELK components deployed and running via Docker Compose</small></div>
+                </div>
+            </div>
+
+            <h3>🎯 Key Achievements:</h3>
+            <ul class="skill-list">
+                <li>Implemented complete ELK Stack for centralized log management</li>
+                <li>Built real-time log processing pipeline with Logstash</li>
+                <li>Created custom Kibana dashboards for log analytics and monitoring</li>
+                <li>Configured Filebeat for automated log collection from multiple sources</li>
+                <li>Demonstrated enterprise observability and site reliability engineering</li>
+                <li>Established scalable logging architecture for microservices monitoring</li>
+            </ul>
+
+            <a href="https://github.com/username/elk-centralized-logging" class="github-link">View Source Code</a>
+        </div>
+
         <div class="cost-summary">
             <h2>💰 Portfolio Investment Summary</h2>
             <div class="metrics">
@@ -622,7 +782,7 @@
                     <div>Total AWS Cost</div>
                 </div>
                 <div class="metric" style="background: rgba(255,255,255,0.2); color: white;">
-                    <div class="metric-value" style="color: white;">11.25 Hours</div>
+                    <div class="metric-value" style="color: white;">12.25 Hours</div>
                     <div>Development Time</div>
                 </div>
                 <div class="metric" style="background: rgba(255,255,255,0.2); color: white;">
