@@ -1,149 +1,103 @@
-# 🚀 DevOps Portfolio Website
+# Portfolio site
 
-> **Professional DevOps portfolio showcasing enterprise-level cloud infrastructure and automation skills**
+Static personal site for Chibuike Onuoha. Plain HTML + CSS, no build step,
+no framework, no JavaScript dependencies. Designed to drop into a GitHub
+Pages repo and just work.
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://Buik1.github.io/devops-portfolio-website)
-[![GitHub Pages](https://img.shields.io/badge/Deployed%20on-GitHub%20Pages-blue)](https://pages.github.com/)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Complete-success)](https://github.com/Buik1/cloudnative-ecommerce)
-
-## 📋 Overview
-
-This repository contains a professional DevOps portfolio website that demonstrates enterprise-level capabilities in cloud infrastructure, automation, and modern development practices. The portfolio showcases two comprehensive projects with quantified results and business impact.
-
-**🎯 Key Metrics:**
-- **Total Investment:** $0.80 AWS costs
-- **Development Time:** 4 hours
-- **ROI:** 118,750x return
-- **Technologies:** 16+ enterprise tools
-- **Value Demonstrated:** $95,000+ DevOps expertise
-
-## 🏗️ Portfolio Projects
-
-### Project 1: Cloud-Native E-Commerce Platform
-- **Stack:** React, Node.js, AWS Lambda, Terraform, S3, Secrets Manager
-- **Features:** Serverless architecture, Infrastructure as Code, CI/CD pipeline
-- **Cost:** $0.42 | **Duration:** 2 hours
-
-### Project 2: Microservices Monitoring System
-- **Stack:** Kubernetes, Grafana, Prometheus, Loki, ActiveMQ, Docker
-- **Features:** Comprehensive monitoring, centralized logging, message queuing
-- **Cost:** $0.38 | **Duration:** 2 hours
-
-## 🛠️ Technologies Demonstrated
-
-<div align="center">
-
-![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Terraform](https://img.shields.io/badge/Terraform-623CE4?style=for-the-badge&logo=terraform&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
-![Grafana](https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white)
-![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)
-
-</div>
-
-## 🚀 Quick Start
-
-### View Live Portfolio
-Visit the live portfolio website: **[https://Buik1.github.io/devops-portfolio-website](https://Buik1.github.io/devops-portfolio-website)**
-
-### Local Development
-```bash
-# Clone the repository
-git clone https://github.com/Buik1/devops-portfolio-website.git
-cd devops-portfolio-website
-
-# Open in browser
-open index.html
-# or
-python -m http.server 8000  # Then visit http://localhost:8000
-```
-
-## 📁 Repository Structure
+## What's in here
 
 ```
-devops-portfolio-website/
-├── index.html                          # Main portfolio website
-├── styles.css                          # Website styling
-├── screenshots/                        # Project screenshots
-│   ├── 01-frontend-dashboard.png
-│   ├── 02-metrics-charts.png
-│   └── ...
-├── DevOps_Portfolio_Executive_Summary.md  # Executive summary
-└── README.md                           # This file
+portfolio/
+├── index.html              home page (hero, selected work, stack, contact)
+├── about.html              longer personal intro and work philosophy
+├── now.html                what I'm working on right now
+├── cv.html                 on-page CV, print-to-PDF friendly
+├── colophon.html           how the site is built
+├── css/
+│   └── style.css           single stylesheet
+├── assets/
+│   └── favicon.svg         svg favicon
+└── writing/
+    ├── index.html                      case studies index
+    ├── eks-migration-zeeh.html         ★ anchor case study, 8-week migration
+    ├── karpenter-incident.html         postmortem: HPA vs Karpenter
+    ├── terraform-gitops-rollout.html   click-ops to GitOps in a quarter
+    ├── cost-25-percent.html            AWS bill cut 25%, how and why
+    ├── observability-stack.html        Datadog vs Prometheus+Grafana+Loki
+    ├── iam-least-privilege.html        practical IAM workflow
+    └── job-bot.html                    write-up of this very project
 ```
 
-## 📊 Business Impact
+Total size: ~120 KB of HTML + 6 KB of CSS. Loads instantly on any connection.
 
-| Metric | Achievement | Business Value |
-|--------|-------------|----------------|
-| **Cost Optimization** | 99.2% reduction | $50k+ annual savings |
-| **Deployment Speed** | 90% faster | Reduced time-to-market |
-| **System Reliability** | 100% uptime | Zero downtime deployments |
-| **Monitoring Coverage** | 100% observability | Proactive issue resolution |
-| **Automation Level** | Fully automated | Zero manual errors |
+## How to deploy to GitHub Pages
 
-## 🎯 Skills Demonstrated
+The existing repo is `buik1/devops-portfolio-website`. You have two options.
 
-### ☁️ Cloud & Infrastructure
-- AWS Lambda, EKS, S3, Secrets Manager, CloudWatch
-- Infrastructure as Code with Terraform
-- Serverless architecture design
-- Cost optimization strategies
+### Option 1: replace everything
 
-### 🐳 DevOps & Automation
-- Kubernetes orchestration
-- Docker containerization
-- CI/CD with GitHub Actions
-- GitOps workflows
+1. Clone the repo locally.
+   ```
+   git clone https://github.com/buik1/devops-portfolio-website.git
+   ```
+2. Delete everything inside (except `.git/` and any `CNAME` file if you have a custom domain).
+3. Copy the contents of this `portfolio/` folder into the repo root.
+4. Commit and push.
+   ```
+   git add .
+   git commit -m "Rebuild portfolio as static site"
+   git push
+   ```
+5. GitHub Pages should redeploy automatically. Check the Settings → Pages
+   tab to confirm the branch is `main` and the folder is `/ (root)`.
 
-### 📊 Monitoring & Observability
-- Grafana dashboards
-- Prometheus metrics
-- Loki log aggregation
-- Custom business metrics
+### Option 2: put it in a subfolder
 
-### 🏗️ Architecture & Development
-- Microservices design
-- RESTful API development
-- React.js frontend
-- Message queuing with ActiveMQ
+If you want to keep your existing site and add this as a subdirectory:
 
-## 📈 Portfolio Highlights
+1. Copy the `portfolio/` folder into the repo as-is.
+2. Change the repo's GitHub Pages source to serve from `/portfolio`.
+3. The site will then live at `buik1.github.io/devops-portfolio-website/portfolio/`.
 
-✅ **Production-Ready:** All projects use enterprise-grade tools and practices  
-✅ **Cost-Optimized:** Demonstrates 99.2% cost reduction through smart architecture  
-✅ **Fully Automated:** Complete CI/CD pipelines with zero manual intervention  
-✅ **Comprehensive Monitoring:** 100% observability with custom dashboards  
-✅ **Security-First:** Encrypted secrets and secure communication  
-✅ **Scalable Design:** Auto-scaling architecture handling traffic spikes  
+I recommend **Option 1**.
 
-## 🔗 Related Repositories
+## How to run it locally
 
-- **[Cloud-Native E-Commerce](https://github.com/Buik1/cloudnative-ecommerce)** - Full-stack application with AWS integration
-- **[Microservices Monitoring](https://github.com/Buik1/microservices-monitoring)** - Kubernetes monitoring stack
+No build. Just open `index.html` in a browser.
 
-## 📞 Contact & Professional Links
+If you want a proper local server (so relative paths and the writing
+subdirectory work cleanly):
 
-- **📧 Email:** Nnaemezieonuoha@gmail.com
-- **💼 LinkedIn:** [Professional Profile](https://linkedin.com/in/your-profile)
-- **🌐 Portfolio:** [Live Demo](https://Buik1.github.io/devops-portfolio-website)
-- **📄 Executive Summary:** [DevOps_Portfolio_Executive_Summary.md](./DevOps_Portfolio_Executive_Summary.md)
+```
+cd portfolio
+python -m http.server 8000
+```
 
-## 📄 License
+Then visit `http://localhost:8000`.
 
-This portfolio is open source and available under the [MIT License](LICENSE).
+## How to edit
 
----
+Everything is plain HTML. To change a headline, open the file in any
+text editor and change the text. The styling is driven by CSS variables
+at the top of `css/style.css` — change the accent colour or the fonts
+there once and the whole site updates.
 
-<div align="center">
+### Adding a new writing piece
 
-**🚀 Ready for DevOps Engineering Roles**
+1. Copy an existing file in `writing/` that has the structure you want
+   (the karpenter-incident.html or cost-25-percent.html files are good
+   templates).
+2. Rename it, edit the content.
+3. Add a link to it from `writing/index.html` and optionally from
+   `index.html` under "Selected work".
 
-*Demonstrating $95,000+ enterprise DevOps skills with $0.80 investment*
+## Things I deliberately didn't do
 
-[![Portfolio](https://img.shields.io/badge/View-Portfolio-brightgreen?style=for-the-badge)](https://Buik1.github.io/devops-portfolio-website)
-
-</div>
+- No analytics. Nothing is tracking your visitors.
+- No web fonts. The site uses your system's fonts. It loads instantly
+  and it respects your system settings.
+- No JavaScript for content. A couple of `javascript:` links for printing,
+  nothing else.
+- No dark mode yet. On the list.
+- No framework. Because the JS framework you pick today has a shorter
+  half-life than the writing on the site.

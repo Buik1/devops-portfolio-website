@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colophon · Chibuike Onuoha</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="top">
+    <a class="name" href="index.html">Chibuike Onuoha</a>
+    <a href="index.html">Home</a>
+    <a href="writing/">Writing</a>
+    <a href="about.html">About</a>
+    <a href="now.html">Now</a>
+    <a href="cv.html">CV</a>
+</nav>
+
+<div class="wrap">
+
+<div class="kicker">Colophon</div>
+<h1 class="page">How this site is built</h1>
+
+<p class="lede">
+    Plain HTML and CSS. No framework. No build step. Under 40&nbsp;KB total.
+</p>
+
+<p>
+    The whole site is a folder of static files. There&rsquo;s no Next.js, no
+    Gatsby, no Webpack, no Tailwind, no Node runtime involved at serve time.
+    I could serve it with <code>python -m http.server</code> and it would
+    work. It&rsquo;s hosted on GitHub Pages out of the
+    <code>buik1/devops-portfolio-website</code> repo.
+</p>
+
+<h2>Typography</h2>
+<ul>
+    <li><strong>Body</strong>: system sans stack (<code>-apple-system</code>, Segoe UI, Inter, Helvetica).</li>
+    <li><strong>Headings and lede</strong>: Charter, falling back to Iowan Old Style, Palatino, Georgia.</li>
+    <li><strong>Code</strong>: JetBrains Mono if you have it, otherwise SF Mono, Menlo, Consolas.</li>
+</ul>
+<p>
+    No web fonts. The site loads with whatever you already have, which means
+    it&rsquo;s instantaneous and it respects your system.
+</p>
+
+<h2>Design choices</h2>
+<ul>
+    <li>One accent colour (a navy that prints well).</li>
+    <li>Text maxes out at a reading-friendly ~68 characters per line.</li>
+    <li>Every case study is one long scrollable page. I don&rsquo;t hide writing behind tabs.</li>
+    <li>SVG diagrams are hand-written, not exported from draw.io. They&rsquo;re small and they scale.</li>
+    <li>Dark mode is on the list. I haven&rsquo;t done it yet because I&rsquo;d rather publish than polish.</li>
+</ul>
+
+<h2>Why no framework</h2>
+<p>
+    Because I wanted to prove to myself I could still build a site without
+    one. Also because I keep writing long-form notes about infrastructure,
+    and the lifecycle of a blog post is about ten years longer than the
+    lifecycle of any JS framework I might pick today.
+</p>
+
+<h2>Source</h2>
+<p>
+    The repo is public at
+    <a href="https://github.com/buik1/devops-portfolio-website">github.com/buik1/devops-portfolio-website</a>.
+    If you spot a typo or a broken link, a PR or a one-line email is equally welcome.
+</p>
+
+</div>
+
+<footer class="site">
+    <span>&copy; Chibuike Onuoha</span>
+    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
+    <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
+</footer>
+
+</body>
+</html>

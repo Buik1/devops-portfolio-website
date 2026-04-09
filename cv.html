@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CV · Chibuike Onuoha</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+    @media print { nav.top, .no-print, footer.site { display: none; } body { font-size: 10.5pt; } h1 { font-size: 20pt; } }
+    .cv-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin: 32px 0 8px; }
+    .cv-head h1 { margin: 0; font-size: 30px; }
+    .cv-head .contact { font-size: 13px; color: var(--muted); text-align: right; line-height: 1.7; }
+    .cv-head .contact a { color: var(--muted); }
+    .role { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin: 18px 0 2px; }
+    .role h3 { margin: 0; font-size: 17px; }
+    .role .when { font-size: 13px; color: var(--muted); font-family: var(--mono); }
+    .role .where { color: var(--muted); font-size: 14px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<nav class="top no-print">
+    <a class="name" href="index.html">Chibuike Onuoha</a>
+    <a href="index.html">Home</a>
+    <a href="writing/">Writing</a>
+    <a href="about.html">About</a>
+    <a href="now.html">Now</a>
+    <a href="cv.html" class="active">CV</a>
+</nav>
+
+<div class="wrap">
+
+<div class="no-print" style="text-align:right;margin:20px 0 0;">
+    <a href="javascript:window.print()" style="font-size:13px;color:var(--muted);">Print / save as PDF &rarr;</a>
+</div>
+
+<div class="cv-head">
+    <div>
+        <h1>Chibuike Onuoha</h1>
+        <div class="meta">Senior Cloud &amp; Infrastructure Engineer &nbsp;·&nbsp; AWS &nbsp;·&nbsp; Kubernetes &nbsp;·&nbsp; Fintech</div>
+    </div>
+    <div class="contact">
+        Lagos, Nigeria &nbsp;·&nbsp; WAT (UTC+1)<br>
+        <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a><br>
+        +234 701 527 3358<br>
+        <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">linkedin.com/in/chibuike-onuoha</a>
+    </div>
+</div>
+
+<h2 style="margin-top:28px;">Summary</h2>
+<p>
+    Senior cloud and infrastructure engineer with six years of experience
+    running production AWS and Kubernetes for fintech transaction platforms.
+    Comfortable owning the full stack from Terraform modules through ArgoCD
+    rollouts to 2am incident response. Track record of cutting downtime,
+    dropping cloud spend, and quietly making teams faster.
+</p>
+
+<h2>Experience</h2>
+
+<div class="role">
+    <h3>Senior Cloud &amp; Infrastructure Engineer</h3>
+    <span class="when">Jan 2022 &ndash; present</span>
+</div>
+<div class="where">Zeeh Africa &nbsp;·&nbsp; Fintech &nbsp;·&nbsp; Remote</div>
+<ul>
+    <li>Own the production platform for a fintech transaction service: EKS clusters, Terraform modules, ArgoCD deployments, and the observability stack on top.</li>
+    <li>Cut downtime incidents by 40% over 18 months through a combination of autoscaling fixes, better alerting, and a steady campaign of small reliability improvements.</li>
+    <li>Dropped AWS spend by 25% without touching feature velocity. Mostly right-sizing, Karpenter consolidation, savings plans, and one very expensive NAT gateway I found by accident.</li>
+    <li>Migrated roughly 30 services from a hand-managed EC2 fleet onto EKS in waves, with zero planned maintenance windows. Full write-up on the portfolio.</li>
+    <li>Built the CI/CD story from scratch: GitHub Actions for build and test, ArgoCD for pull-based deploys, a small amount of Jenkins for legacy jobs that refused to die.</li>
+    <li>Designed VPC layouts, IAM least-privilege policies, KMS key hierarchies, and Secrets Manager rotation. Passed three third-party security reviews.</li>
+    <li>Set up Datadog, Prometheus, Grafana, and Loki; wrote the RED/USE dashboards and the first real runbook library.</li>
+    <li>Supported event-driven pieces of the platform (Lambda, SQS, EventBridge) and wrote the Terraform for most of them.</li>
+    <li>Lead on-call. Wrote the postmortem template, the escalation policy, and the incident review cadence the team still runs.</li>
+</ul>
+
+<div class="role">
+    <h3>Cloud Engineer</h3>
+    <span class="when">Jan 2020 &ndash; Dec 2021</span>
+</div>
+<div class="where">Arravo &nbsp;·&nbsp; Enterprise &nbsp;·&nbsp; Lagos</div>
+<ul>
+    <li>Designed and supported cloud and hybrid infrastructure for enterprise customers.</li>
+    <li>Automated provisioning with Ansible and Jenkins. Retired the &ldquo;spreadsheet of servers&rdquo; and replaced it with actual inventory.</li>
+    <li>Owned reliability, monitoring, and incident response for the team&rsquo;s cloud footprint.</li>
+    <li>Supported networking changes across VPNs, routing, firewalls, and load balancers.</li>
+    <li>Drove uptime improvements through steadier patching, saner alerting, and better runbooks.</li>
+</ul>
+
+<h2>Skills</h2>
+<dl class="stack">
+    <dt>Cloud</dt>
+    <dd>AWS (EKS, EC2, VPC, IAM, KMS, Lambda, S3, CloudWatch, Secrets Manager), OCI</dd>
+    <dt>Containers</dt>
+    <dd>Kubernetes, Docker, Helm, Karpenter, cert-manager, external-dns</dd>
+    <dt>IaC</dt>
+    <dd>Terraform, CloudFormation, Ansible</dd>
+    <dt>CI / CD</dt>
+    <dd>GitHub Actions, Jenkins, ArgoCD, GitOps</dd>
+    <dt>Networking</dt>
+    <dd>VPC design, load balancers, VPN, network segmentation</dd>
+    <dt>Observability</dt>
+    <dd>Datadog, Prometheus, Grafana, Loki, CloudWatch, OpenTelemetry</dd>
+    <dt>Scripting</dt>
+    <dd>Python, Bash, Linux, light Go</dd>
+</dl>
+
+<h2>Certifications</h2>
+<ul>
+    <li>Oracle Cloud Infrastructure Certified Multicloud Architect Professional</li>
+    <li>Oracle Cloud Infrastructure Certified Architect Associate</li>
+    <li>Oracle Cloud Infrastructure Certified Foundations Associate</li>
+    <li>Oracle Cloud Infrastructure Certified AI Foundations Associate</li>
+</ul>
+
+<h2>Education</h2>
+<div class="role">
+    <h3>LL.B, University of Ibadan</h3>
+    <span class="when">2020</span>
+</div>
+<p class="meta">Yes, law school. The infrastructure career is a long story; the short version is on the <a href="about.html">about page</a>.</p>
+
+</div>
+
+<footer class="site no-print">
+    <span>&copy; Chibuike Onuoha</span>
+    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
+    <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
+</footer>
+
+</body>
+</html>

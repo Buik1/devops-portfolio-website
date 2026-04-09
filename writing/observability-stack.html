@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Picking an observability stack · Chibuike Onuoha</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="top">
+    <a class="name" href="../index.html">Chibuike Onuoha</a>
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Writing</a>
+    <a href="../about.html">About</a>
+    <a href="../now.html">Now</a>
+    <a href="../cv.html">CV</a>
+</nav>
+
+<div class="wrap">
+
+<div class="kicker">Case study &nbsp;·&nbsp; Observability &nbsp;·&nbsp; Published Sep 2023</div>
+<h1 class="page">Picking an observability stack for a team of eight</h1>
+<p class="lede">
+    We ran Datadog and Prometheus plus Grafana plus Loki side by side for six
+    weeks. Here&rsquo;s what we kept, what we cut, and the handful of
+    dashboards that ended up actually getting looked at.
+</p>
+
+<div class="tldr">
+    <strong>TL;DR</strong>
+    <p>We landed on Prometheus + Grafana + Loki for metrics and logs (open source), with Datadog kept only for APM and a small amount of synthetic monitoring. The deciding factor was not the tooling, it was the cost trajectory and the fact that three engineers already knew PromQL. Most of the dashboards we built never got opened. The four that did are listed below.</p>
+</div>
+
+<h2>Why this even came up</h2>
+<p>
+    At the start of 2023 we were on a full Datadog deployment that had grown
+    organically. Metrics, logs, APM, RUM, synthetics, everything. It worked.
+    The UX was good. And it was becoming a serious line item on the AWS
+    bill&rsquo;s more expensive cousin, the vendor invoice.
+</p>
+<p>
+    The CFO wasn&rsquo;t asking me to cut it yet, but I could see the
+    trajectory. Log volume was doubling every six months as the platform
+    grew. I did the math and at our current growth we&rsquo;d be spending
+    more on observability than on compute within 18 months. That&rsquo;s not
+    automatically wrong, but it was worth a test.
+</p>
+
+<h2>The comparison, honestly</h2>
+<p>
+    I set up a parallel stack alongside Datadog and ran both for six weeks
+    on production. Not a benchmark, a lived-in test. The team used both for
+    real work. Here&rsquo;s what I concluded.
+</p>
+
+<h4>Datadog</h4>
+<ul>
+    <li><strong>Wins</strong>: correlated metrics/logs/traces without configuration, great APM UI, Watchdog was occasionally uncanny at catching regressions.</li>
+    <li><strong>Loses</strong>: cost per ingested log line, cost per custom metric, cost per host. The unit economics do not scale down gracefully.</li>
+    <li><strong>Learning curve</strong>: low.</li>
+</ul>
+
+<h4>Prometheus + Grafana + Loki (kube-prometheus-stack + Loki stack)</h4>
+<ul>
+    <li><strong>Wins</strong>: flat-rate cost (you pay for the storage and the compute, not the cardinality), PromQL is a real query language, alerting rules in YAML that live next to the code.</li>
+    <li><strong>Loses</strong>: you own the stack. High cardinality will bite you. Loki&rsquo;s query UX is rougher than Datadog log search if you don&rsquo;t structure your logs well.</li>
+    <li><strong>Learning curve</strong>: medium. PromQL is easy to misuse if you haven&rsquo;t written it before.</li>
+</ul>
+
+<h2>What we kept and what we cut</h2>
+<table>
+<thead><tr><th>Thing</th><th>Kept on</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>Metrics</td><td>Prometheus + Grafana</td><td>Flat-rate, flexible, already bundled with kube-prometheus-stack. Storage on S3 via Thanos.</td></tr>
+<tr><td>Logs</td><td>Loki</td><td>Cheap and the query language is close enough to PromQL that the team picked it up.</td></tr>
+<tr><td>APM / traces</td><td>Datadog</td><td>OSS tracing is real (Tempo, Jaeger) but our team didn&rsquo;t have the bandwidth to run two new things at once. Kept DD for APM only.</td></tr>
+<tr><td>Synthetics</td><td>Datadog</td><td>Twenty checks, trivial cost. Not worth replacing.</td></tr>
+<tr><td>Alerting</td><td>Alertmanager + PagerDuty</td><td>Alerts-as-code in the gitops repo, versioned with the code they alert on.</td></tr>
+<tr><td>Dashboards</td><td>Grafana</td><td>JSON dashboards checked into the repo, rendered from Jsonnet.</td></tr>
+</tbody>
+</table>
+
+<h2>The stack, in Terraform and YAML</h2>
+<p>
+    I installed kube-prometheus-stack via its Helm chart, with Thanos
+    sidecars shipping blocks to S3 for long-term storage. Loki got its own
+    install with the chunks bucket on S3 as well. Both of them run in a
+    dedicated <code>observability</code> namespace with their own NodePool.
+</p>
+
+<div class="filename">helm/values/kube-prometheus-stack.yaml (excerpt)</div>
+<pre><code>prometheus:
+  prometheusSpec:
+    retention: 10d
+    retentionSize: 45GB
+    thanos:
+      baseImage: quay.io/thanos/thanos
+      version: v0.34.1
+      objectStorageConfig:
+        existingSecret:
+          name: thanos-objstore
+          key:  objstore.yml
+    resources:
+      requests: { cpu: 500m, memory: 4Gi }
+      limits:   { cpu: "2",  memory: 8Gi }
+    externalLabels:
+      cluster: prod
+      region:  eu-west-1
+    additionalScrapeConfigs:
+      - job_name: karpenter
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces: { names: [karpenter] }
+</code></pre>
+
+<h2>The four dashboards that actually get used</h2>
+<p>
+    I built about 20 dashboards in the first month. Grafana&rsquo;s sharing
+    link tells you which ones get opened. After three months, four of them
+    were doing all the work. I deleted most of the rest because unused
+    dashboards rot.
+</p>
+
+<h4>1. The payments SLO board</h4>
+<p>
+    One board, one service, two panels: availability SLO burn rate (1h and
+    6h windows) and p99 latency against the SLO ceiling. That&rsquo;s it.
+    This is the board I open first when PagerDuty wakes me.
+</p>
+
+<div class="filename">prometheus/rules/slo-payments.yml</div>
+<pre><code>- record: slo:payments_availability:ratio_rate1h
+  expr: |
+    sum(rate(http_requests_total{job="payments-api",status!~"5.."}[1h]))
+    /
+    sum(rate(http_requests_total{job="payments-api"}[1h]))
+
+- record: slo:payments_availability:error_budget_burn_rate1h
+  expr: |
+    (1 - slo:payments_availability:ratio_rate1h) / (1 - 0.999)
+</code></pre>
+
+<h4>2. The cluster-wide RED board</h4>
+<p>
+    Rate, errors, duration, grouped by Kubernetes namespace and workload.
+    One glance tells me whether any service is misbehaving and where. Built
+    from the <code>istio_requests_total</code> equivalent, in our case the
+    AWS Load Balancer Controller metrics plus a middleware in our services
+    that emits <code>http_requests_total</code> with consistent labels.
+</p>
+
+<h4>3. The Karpenter / cluster capacity board</h4>
+<p>
+    Node count, pending pods over time, % allocation per NodePool, nodes
+    per instance family. This was the board that would have saved us
+    18 minutes if I&rsquo;d had it before the
+    <a href="karpenter-incident.html">2am incident</a>.
+</p>
+
+<h4>4. The cost board</h4>
+<p>
+    Yes, a cost dashboard in Grafana. I pull AWS Cost Explorer data into
+    Prometheus via a small exporter that runs hourly. It&rsquo;s not precise
+    (Cost Explorer lags by a day), but it&rsquo;s close enough to spot
+    something moving in the wrong direction. The team checks it on Mondays.
+</p>
+
+<h2>Alerting philosophy</h2>
+<p>
+    I wrote out the alerting rules in the gitops repo and made them code
+    reviewed. The rule I kept coming back to: <em>every alert must be
+    actionable and must have a runbook link.</em> If an alert fires and the
+    on-call can&rsquo;t either fix it, escalate it, or explicitly acknowledge
+    it as a known behaviour, the alert itself is the bug.
+</p>
+
+<div class="filename">prometheus/rules/alerts.yml (excerpt)</div>
+<pre><code>groups:
+- name: payments-api
+  rules:
+  - alert: PaymentsAPIHighErrorRate
+    expr: |
+      (
+        sum(rate(http_requests_total{job="payments-api",status=~"5.."}[5m]))
+        /
+        sum(rate(http_requests_total{job="payments-api"}[5m]))
+      ) > 0.02
+    for: 5m
+    labels: { severity: page }
+    annotations:
+      summary: "payments-api error rate > 2% for 5m"
+      runbook: "https://runbooks/payments-api/high-error-rate"
+      dashboard: "https://grafana/d/payments-slo"
+
+  - alert: PaymentsAPIP99High
+    expr: histogram_quantile(0.99, sum by (le) (rate(http_request_duration_seconds_bucket{job="payments-api"}[5m]))) > 0.5
+    for: 10m
+    labels: { severity: page }
+    annotations:
+      summary: "payments-api p99 latency above 500ms for 10m"
+      runbook: "https://runbooks/payments-api/high-latency"
+</code></pre>
+
+<h2>The cost picture, after</h2>
+<p>
+    Observability spend dropped by about 55% total. Datadog stayed as a
+    line item (APM + synthetics), but it was a fraction of the previous
+    bill. The self-hosted Prometheus + Loki + Thanos setup cost us maybe
+    two steady-state nodes worth of compute and a few dollars of S3 per
+    month. Operational burden was real but not overwhelming: roughly a day
+    a month of maintenance, once the initial deployment was stable.
+</p>
+
+<h2>What I&rsquo;d tell my past self</h2>
+<ul>
+    <li><strong>Don&rsquo;t migrate logs and metrics at the same time.</strong> I did, and it made the first two weeks harder than they needed to be. Metrics first, then logs once metrics are boring.</li>
+    <li><strong>Cardinality will bite you.</strong> The first week on Prometheus I had an alert that scraped a label containing a user ID. I noticed when Grafana started timing out. Good fast lesson.</li>
+    <li><strong>Structured logs are the price of admission.</strong> If your services still emit <code>printf</code> strings, fix that before you move to Loki. LogQL can parse unstructured logs but it&rsquo;s painful.</li>
+    <li><strong>Keep vendor APM if you already have it.</strong> Replacing everything at once is a project. Replacing the expensive parts and keeping the good parts is a good quarter.</li>
+</ul>
+
+<hr>
+
+<p class="meta">Published September 2023.</p>
+
+</div>
+
+<footer class="site">
+    <span>&copy; Chibuike Onuoha</span>
+    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
+    <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
+</footer>
+
+</body>
+</html>

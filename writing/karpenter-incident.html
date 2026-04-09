@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 2am Karpenter incident · Chibuike Onuoha</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="top">
+    <a class="name" href="../index.html">Chibuike Onuoha</a>
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Writing</a>
+    <a href="../about.html">About</a>
+    <a href="../now.html">Now</a>
+    <a href="../cv.html">CV</a>
+</nav>
+
+<div class="wrap">
+
+<div class="kicker">Postmortem &nbsp;·&nbsp; Incident &nbsp;·&nbsp; Published Apr 2024</div>
+<h1 class="page">The 2am Karpenter incident: why our autoscaler made the outage worse</h1>
+<p class="lede">
+    A peak-hour latency spike turned into 18 minutes of partial unavailability
+    because the HPA and Karpenter were both reacting correctly. Correctly, and
+    in exactly the wrong order.
+</p>
+
+<div class="tldr">
+    <strong>TL;DR</strong>
+    <p>Under a sustained traffic spike, HPA scaled pods faster than Karpenter could provision nodes. The pending pods held for longer than our SLO budget allowed because Karpenter was waiting for a full batch of pods before launching a larger node. Fixing it was a three-line change to <code>consolidationPolicy</code> and a tighter <code>HorizontalPodAutoscaler</code> behaviour spec. The slow-down was not a bug in either tool; it was a default that didn&rsquo;t match our traffic shape.</p>
+</div>
+
+<div class="metrics">
+    <div class="metric"><div class="n">18 min</div><div class="lbl">Partial unavailability</div></div>
+    <div class="metric"><div class="n">~6%</div><div class="lbl">Requests 5xx at peak</div></div>
+    <div class="metric"><div class="n">0</div><div class="lbl">Lost transactions</div></div>
+    <div class="metric"><div class="n">3 lines</div><div class="lbl">Size of the actual fix</div></div>
+</div>
+
+<h2>The short version</h2>
+<p>
+    On a Tuesday night at about 1:52am WAT, our payments API began returning
+    HTTP 503s on about 4&ndash;6% of requests. The SLO budget for that service
+    is 99.9%. PagerDuty woke me up. We had a clean recovery by 2:10am, total
+    elapsed user impact about 18 minutes. No transactions were lost; clients
+    retried successfully once the pods came up.
+</p>
+<p>
+    The immediate cause was a pod backlog in the <code>payments</code>
+    namespace: the HPA had asked for 14 new replicas in response to a sudden
+    traffic wave, but only 4 pods actually started within the first minute.
+    The rest were <code>Pending</code> because the cluster didn&rsquo;t have
+    capacity and Karpenter was still deciding what to do.
+</p>
+
+<h2>Timeline (all times WAT)</h2>
+
+<ul class="timeline">
+    <li><span class="t">01:51:10</span> External partner begins a scheduled batch that ramps request volume to ~3&times; baseline over two minutes. This is known and normally absorbed.</li>
+    <li><span class="t">01:51:40</span> Latency on <code>payments-api</code> starts rising. p50 from 42ms to 120ms, p99 from 180ms to 380ms.</li>
+    <li><span class="t">01:52:05</span> HPA makes a scaling decision: from 8 replicas to 22, all at once. (We had a generous <code>maxReplicas: 40</code> and a targetCPU of 60%.)</li>
+    <li><span class="t">01:52:06</span> 14 new pods land in <code>Pending</code>. The existing 8 nodes are at 70&ndash;85% allocation; not enough headroom to fit the new pods.</li>
+    <li><span class="t">01:52:10</span> Karpenter&rsquo;s provisioner sees pending pods and begins planning.</li>
+    <li><span class="t">01:52:14</span> First PagerDuty alert: <code>PaymentsAPIErrorRateHigh</code> fires.</li>
+    <li><span class="t">01:52:38</span> Karpenter launches one new <code>m6i.2xlarge</code>. It chose large because the pending-pod batch was big enough to justify consolidation.</li>
+    <li><span class="t">01:53:01</span> EC2 instance begins bootstrapping. Typical time-to-ready for us: 60&ndash;80s.</li>
+    <li><span class="t">01:53:40</span> I&rsquo;m at the laptop, looking at Grafana. 5xx rate visible on the SLO board, climbing.</li>
+    <li><span class="t">01:54:20</span> New node joins, Karpenter binds the first batch of pending pods. Startup probe delay is 15s. Pods begin serving at ~01:54:45.</li>
+    <li><span class="t">01:56&ndash;02:03</span> Second traffic wave arrives before the pods are warm. p99 spikes again. Another round of HPA scaling, another round of pending pods, another node launch.</li>
+    <li><span class="t">02:08</span> Cluster has settled. Error rate back under 0.1%.</li>
+    <li><span class="t">02:10</span> I mark the incident resolved. Retrospective calendar invite goes out for the next morning.</li>
+</ul>
+
+<h2>What actually went wrong</h2>
+<p>
+    The error rate wasn&rsquo;t caused by Karpenter, strictly. It was caused by
+    the gap between &ldquo;HPA wants more pods&rdquo; and &ldquo;pods are
+    actually running&rdquo;. In a healthy cluster that gap is small because
+    existing nodes have headroom. Our gap was big because:
+</p>
+<ol>
+    <li>
+        <strong>Consolidation was too aggressive.</strong> Our NodePool was set
+        to consolidate any under-utilised node after 30s. Outside peak, that
+        policy packed the cluster tight. Efficient, but it meant there was
+        <em>no headroom</em> when the next spike came. The cluster was always
+        running at 80% when the next wave hit.
+    </li>
+    <li>
+        <strong>HPA scaled in one jump.</strong> We had no <code>behavior</code>
+        spec set, so HPA used defaults, which are generous: scale up as many
+        pods as the ratio says, all at once. We asked for 14 pods before we
+        had anywhere to put them.
+    </li>
+    <li>
+        <strong>Karpenter made a &ldquo;correct&rdquo; slow choice.</strong> When
+        faced with 14 pending pods, Karpenter chose a single larger node that
+        would fit the whole batch. A single <code>m6i.2xlarge</code> is
+        cheaper than two <code>xlarge</code>s per core. But it took 70s to
+        boot, and during those 70s all 14 pods were pending, not just some.
+    </li>
+</ol>
+<p>
+    Any one of those in isolation is fine. Together they composed into a
+    slow-path that our SLO budget couldn&rsquo;t absorb.
+</p>
+
+<h2>The actual fix (three lines)</h2>
+<p>
+    I made three small changes. Together they cost us about $40/month in
+    extra compute. I&rsquo;ll take that trade all day.
+</p>
+
+<h4>1. Keep a buffer of spare capacity</h4>
+<div class="filename">k8s/karpenter/nodepool-general.yaml</div>
+<pre><code>  disruption:
+    consolidationPolicy: WhenEmpty   # was: WhenEmptyOrUnderutilized
+    consolidateAfter: 5m             # was: 30s
+</code></pre>
+<p>
+    This stops Karpenter from tightly packing the cluster during the day.
+    Under-utilised nodes stay around for at least five minutes before they
+    get candidate-for-disruption. In practice this gives us ~15% standing
+    headroom, which swallows a normal traffic wave without any new nodes at
+    all.
+</p>
+
+<h4>2. Pre-launch a small amount of overprovisioning</h4>
+<p>
+    I installed a tiny
+    <a href="https://github.com/kubernetes/autoscaler">cluster-overprovisioner</a>
+    deployment: three pods with a very low priority class that do nothing but
+    hold a few CPU/memory reservations. When a real pod needs to schedule,
+    these get evicted first, which triggers Karpenter to launch a node
+    <em>before</em> the real pod is under pressure.
+</p>
+
+<div class="filename">k8s/overprovisioner/deployment.yaml</div>
+<pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cluster-overprovisioner
+spec:
+  replicas: 3
+  selector: { matchLabels: { app: overprovisioner } }
+  template:
+    metadata: { labels: { app: overprovisioner } }
+    spec:
+      priorityClassName: cluster-overprovisioner
+      containers:
+        - name: pause
+          image: registry.k8s.io/pause:3.9
+          resources:
+            requests: { cpu: "1000m", memory: "2Gi" }
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: cluster-overprovisioner
+value: -10
+globalDefault: false
+description: "Placeholder pods that get evicted first."
+</code></pre>
+
+<h4>3. Teach HPA to scale in smaller jumps</h4>
+<div class="filename">k8s/payments/hpa.yaml</div>
+<pre><code>behavior:
+  scaleUp:
+    stabilizationWindowSeconds: 0
+    policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 30
+      - type: Pods
+        value: 4
+        periodSeconds: 30
+    selectPolicy: Max
+  scaleDown:
+    stabilizationWindowSeconds: 300
+    policies:
+      - type: Percent
+        value: 20
+        periodSeconds: 60
+</code></pre>
+
+<p>
+    The upward policy now adds pods in steps of four or 50%, whichever is
+    bigger. If we need to go from 8 to 22, that&rsquo;s three steps with a
+    30-second gap, and each step triggers a smaller Karpenter decision that
+    picks a right-sized node instead of a giant one.
+</p>
+
+<h2>How I verified the fix</h2>
+<p>
+    I didn&rsquo;t trust the change until I&rsquo;d seen it behave under a
+    real load test. I ran k6 against the staging cluster with a traffic
+    profile that matched the production wave, twice: once with the old
+    config, once with the new.
+</p>
+
+<table>
+<thead><tr><th>Scenario</th><th>Time to bind all pods</th><th>Peak 5xx rate</th><th>p99 peak</th></tr></thead>
+<tbody>
+<tr><td>Old config</td><td>~75s</td><td>4.8%</td><td>520ms</td></tr>
+<tr><td>New config</td><td>~18s</td><td>0.2%</td><td>230ms</td></tr>
+</tbody>
+</table>
+
+<p>
+    I also added an SLO burn-rate alert that pages on a <em>fast burn</em> at
+    14x, instead of waiting for the slow burn alert to catch up. That
+    wouldn&rsquo;t have prevented the original incident, but it would have
+    got me out of bed two minutes earlier.
+</p>
+
+<h2>What I learned</h2>
+<ul>
+    <li><strong>Efficiency at rest costs you latency under load.</strong> Consolidation is a good policy, but only with a buffer that keeps enough nodes warm to swallow a spike. The spare capacity is an insurance premium, and it&rsquo;s worth paying.</li>
+    <li><strong>HPA defaults are dangerous for bursty workloads.</strong> The <code>behavior</code> spec is one of those Kubernetes features you don&rsquo;t know you need until you need it. Set it up front.</li>
+    <li><strong>Karpenter&rsquo;s &ldquo;cheapest node that fits&rdquo; logic is optimised for the steady state, not the transient.</strong> If you need pods to start <em>now</em>, don&rsquo;t give Karpenter a pile of pending pods to plan around. Give it a trickle.</li>
+    <li><strong>The best fix was boring.</strong> Not a new tool, not a new architecture. A config change I could have made six months earlier if I&rsquo;d been paying attention to the right graph.</li>
+</ul>
+
+<h2>The alert that would have saved us an hour of sleep</h2>
+<div class="filename">prometheus/rules/slo.yml</div>
+<pre><code>- alert: PaymentsSLOFastBurn
+  expr: |
+    (
+      sum(rate(http_requests_total{job="payments-api",status=~"5.."}[1m]))
+      /
+      sum(rate(http_requests_total{job="payments-api"}[1m]))
+    ) > (14 * 0.001)
+  for: 2m
+  labels:
+    severity: page
+    slo: payments-api-availability
+  annotations:
+    summary: "Fast-burn on payments-api SLO (14x)"
+    runbook: "https://runbooks/payments-api/fast-burn"
+</code></pre>
+
+<hr>
+
+<p class="meta">
+    Published April 2024. Sanitised from a real incident. All PII and business
+    identifiers are removed; the numbers, timeline, and config changes are
+    from the actual postmortem.
+</p>
+
+</div>
+
+<footer class="site">
+    <span>&copy; Chibuike Onuoha</span>
+    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
+    <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
+</footer>
+
+</body>
+</html>

@@ -1,906 +1,193 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Engineer Portfolio</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 60px 0; text-align: center; }
-        h1 { font-size: 3rem; margin-bottom: 10px; }
-        .subtitle { font-size: 1.2rem; opacity: 0.9; }
-        .project { background: white; margin: 40px 0; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .project h2 { color: #4CAF50; margin-bottom: 20px; font-size: 2rem; }
-        .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
-        .tech { background: #e3f2fd; color: #1976d2; padding: 5px 12px; border-radius: 20px; font-size: 0.9rem; }
-        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0; }
-        .metric { background: #f8f9fa; padding: 20px; border-radius: 10px; text-align: center; }
-        .metric-value { font-size: 2rem; font-weight: bold; color: #4CAF50; }
-        .screenshots { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0; }
-        .screenshot { border: 1px solid #ddd; border-radius: 10px; overflow: hidden; }
-        .screenshot img { width: 100%; height: 200px; object-fit: cover; }
-        .screenshot-caption { padding: 15px; background: #f8f9fa; font-size: 0.9rem; }
-        .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin: 40px 0; }
-        .skill-category { background: #f8f9fa; padding: 25px; border-radius: 10px; }
-        .skill-category h3 { color: #333; margin-bottom: 15px; }
-        .skill-list { list-style: none; }
-        .skill-list li { padding: 5px 0; }
-        .skill-list li:before { content: "✅ "; color: #4CAF50; }
-        .cost-summary { background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 30px; border-radius: 15px; text-align: center; margin: 40px 0; }
-        .github-link { display: inline-block; background: #333; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; margin: 10px; }
-        .github-link:hover { background: #555; }
-        footer { background: #333; color: white; text-align: center; padding: 40px 0; margin-top: 60px; }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chibuike Onuoha · Senior DevOps &amp; SRE</title>
+<meta name="description" content="Chibuike Onuoha. Senior Cloud and Infrastructure Engineer. I run production Kubernetes for fintech, mostly on AWS. Based in Lagos, remote worldwide.">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>🚀 DevOps Engineer Portfolio</h1>
-            <p class="subtitle">Enterprise-Level Cloud Infrastructure & Automation</p>
-            <p>10 Complete Projects • 55+ Technologies • 16 Hours Development</p>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="project">
-            <h2>🛒 Project 1: CloudNative E-Commerce Platform</h2>
-            <p><strong>Duration:</strong> 2 hours deployment + documentation</p>
-            
-            <div class="tech-stack">
-                <span class="tech">AWS EKS</span>
-                <span class="tech">Terraform</span>
-                <span class="tech">AWS Lambda</span>
-                <span class="tech">AWS S3</span>
-                <span class="tech">AWS Secrets Manager</span>
-                <span class="tech">AWS CloudWatch</span>
-                <span class="tech">Kubernetes</span>
-                <span class="tech">Docker</span>
-                <span class="tech">React</span>
-                <span class="tech">Node.js</span>
-                <span class="tech">GitHub Actions</span>
-            </div>
+<nav class="top">
+    <a class="name" href="index.html">Chibuike Onuoha</a>
+    <a href="index.html" class="active">Home</a>
+    <a href="writing/">Writing</a>
+    <a href="about.html">About</a>
+    <a href="now.html">Now</a>
+    <a href="cv.html">CV</a>
+</nav>
 
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-value">30min</div>
-                    <div>Deployment Time</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">15+</div>
-                    <div>AWS Resources</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">100%</div>
-                    <div>Infrastructure as Code</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">2hrs</div>
-                    <div>Development Time</div>
-                </div>
-            </div>
+<div class="wrap">
 
-            <div class="screenshots">
-                <div class="screenshot">
-                    <img src="screenshots/01-frontend-dashboard.png" alt="Frontend Dashboard">
-                    <div class="screenshot-caption">React Frontend - E-commerce dashboard<br><small>User interface showing order management and business metrics</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/02-metrics-charts.png" alt="Metrics Charts">
-                    <div class="screenshot-caption">Business Metrics - Real-time charts<br><small>Live data visualization showing system performance and usage</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/04-lambda-function.png" alt="Lambda Function">
-                    <div class="screenshot-caption">Lambda Function - Serverless processing<br><small>AWS serverless function handling order processing automatically</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/07-terraform-output.png" alt="Terraform">
-                    <div class="screenshot-caption">Terraform - Infrastructure deployment<br><small>Infrastructure as Code creating AWS resources automatically</small></div>
-                </div>
-            </div>
-
-            <h3>🎯 Key Achievements:</h3>
-            <ul class="skill-list">
-                <li>Deployed full-stack application on Kubernetes</li>
-                <li>Implemented serverless order processing with Lambda</li>
-                <li>Automated infrastructure provisioning with Terraform</li>
-                <li>Integrated secure secrets management</li>
-                <li>Set up comprehensive monitoring with CloudWatch</li>
-                <li>Demonstrated cost optimization with spot instances</li>
-            </ul>
-
-            <a href="https://github.com/username/cloudnative-ecommerce" class="github-link">View Source Code</a>
-        </div>
-
-        <div class="project">
-            <h2>🐳 Project 2: Zero-Cost Local DevOps Environment</h2>
-            <p><strong>Duration:</strong> 1 hour setup + documentation</p>
-            
-            <div class="tech-stack">
-                <span class="tech">Docker</span>
-                <span class="tech">Docker Compose</span>
-                <span class="tech">Prometheus</span>
-                <span class="tech">Grafana</span>
-                <span class="tech">Redis</span>
-                <span class="tech">Node.js</span>
-                <span class="tech">React</span>
-                <span class="tech">Microservices</span>
-                <span class="tech">Monitoring</span>
-            </div>
-
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-value">5</div>
-                    <div>Services</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">100%</div>
-                    <div>Local Development</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">Real-time</div>
-                    <div>Metrics Collection</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">1hr</div>
-                    <div>Setup Time</div>
-                </div>
-            </div>
-
-            <div class="screenshots">
-                <div class="screenshot">
-                    <img src="screenshots/Frontend App.png" alt="Frontend Application">
-                    <div class="screenshot-caption">Application - Health status dashboard<br><small>Web interface showing system health and service status</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/Prometheus Home.png" alt="Prometheus Home">
-                    <div class="screenshot-caption">Prometheus - Main interface<br><small>Metrics collection system monitoring all services</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/Prometheus Targets.png" alt="Prometheus Targets">
-                    <div class="screenshot-caption">Prometheus - Target monitoring<br><small>Shows which services are being monitored and their health</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/Prometheus Query.png" alt="Prometheus Query">
-                    <div class="screenshot-caption">Prometheus - Metrics query results<br><small>Real-time data queries showing system performance metrics</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/Grafana Data Source.png" alt="Grafana Data Source">
-                    <div class="screenshot-caption">Grafana - Prometheus integration<br><small>Connecting Grafana to Prometheus for data visualization</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/Grafana Dashboard.png" alt="Grafana Dashboard">
-                    <div class="screenshot-caption">Grafana - Custom monitoring dashboard<br><small>Beautiful charts and graphs showing system metrics</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/Real-time Metrics.png" alt="Real-time Metrics">
-                    <div class="screenshot-caption">Grafana - Real-time metrics visualization<br><small>Live updating graphs showing current system performance</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/Docker Status.png" alt="Docker Status">
-                    <div class="screenshot-caption">Docker - All services running<br><small>Terminal showing all containerized services running successfully</small></div>
-                </div>
-            </div>
-
-            <h3>🎯 Key Achievements:</h3>
-            <ul class="skill-list">
-                <li>Built complete local DevOps environment</li>
-                <li>Implemented microservices with Docker Compose</li>
-                <li>Set up Prometheus metrics collection</li>
-                <li>Created Grafana monitoring dashboards</li>
-                <li>Demonstrated CORS handling and API integration</li>
-                <li>Showcased zero-cost development approach</li>
-            </ul>
-
-            <a href="https://github.com/Buik1/simple-devops-demo" class="github-link">View Source Code</a>
-        </div>
-
-        <div class="project">
-            <h2>🔄 Project 3: Enterprise CI/CD Pipeline</h2>
-            <p><strong>Duration:</strong> 1 hour development + automation</p>
-            
-            <div class="tech-stack">
-                <span class="tech">GitHub Actions</span>
-                <span class="tech">Docker</span>
-                <span class="tech">Express.js</span>
-                <span class="tech">Jest Testing</span>
-                <span class="tech">npm audit</span>
-                <span class="tech">Multi-stage Builds</span>
-                <span class="tech">Nginx</span>
-                <span class="tech">Docker Compose</span>
-                <span class="tech">Security Scanning</span>
-            </div>
-
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-value">4</div>
-                    <div>Pipeline Stages</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">5/5</div>
-                    <div>Tests Passing</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">100%</div>
-                    <div>Automated</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">1hr</div>
-                    <div>Development Time</div>
-                </div>
-            </div>
-
-            <div class="screenshots">
-                <div class="screenshot">
-                    <img src="screenshots/github-actions-pipeline.png" alt="GitHub Actions Pipeline">
-                    <div class="screenshot-caption">GitHub Actions - 4-stage CI/CD pipeline complete<br><small>Automated workflow testing, securing, building, and deploying code</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/jest-tests-passing.png" alt="Jest Tests">
-                    <div class="screenshot-caption">Jest - All 5 tests passing (100% success)<br><small>Automated testing ensuring code quality and functionality</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/security-audit-clean.png" alt="Security Audit">
-                    <div class="screenshot-caption">Security - npm audit clean (0 vulnerabilities)<br><small>Security scan showing no known vulnerabilities in dependencies</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/docker-build-success.png" alt="Docker Build">
-                    <div class="screenshot-caption">Docker - Multi-stage build successful<br><small>Containerized application built and ready for deployment</small></div>
-                </div>
-            </div>
-
-            <h3>🎯 Key Achievements:</h3>
-            <ul class="skill-list">
-                <li>Built 4-stage automated CI/CD pipeline (test → security → build → deploy)</li>
-                <li>Implemented comprehensive Jest test suite with 5 passing tests</li>
-                <li>Integrated security scanning with npm audit (0 vulnerabilities)</li>
-                <li>Created multi-stage Docker builds for production optimization</li>
-                <li>Set up nginx reverse proxy and Docker Compose orchestration</li>
-                <li>Demonstrated enterprise-level DevOps automation workflows</li>
-            </ul>
-
-            <a href="https://github.com/Buik1/ci-cd-pipeline-demo" class="github-link">View Source Code</a>
-        </div>
-
-        <div class="project">
-            <h2>☁️ Project 4: Hybrid Cloud Kubernetes Support</h2>
-            <p><strong>Duration:</strong> 3 hours development + documentation</p>
-            
-            <div class="tech-stack">
-                <span class="tech">AWS EKS</span>
-                <span class="tech">Kubernetes</span>
-                <span class="tech">Kind (Local K8s)</span>
-                <span class="tech">Helm Charts</span>
-                <span class="tech">Python</span>
-                <span class="tech">Multi-Cluster</span>
-                <span class="tech">Hybrid Cloud</span>
-                <span class="tech">Support Automation</span>
-                <span class="tech">API Testing</span>
-            </div>
-
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-value">2</div>
-                    <div>Kubernetes Clusters</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">100%</div>
-                    <div>Hybrid Coverage</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">60%</div>
-                    <div>Cost Savings</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">3hrs</div>
-                    <div>Development Time</div>
-                </div>
-            </div>
-
-            <div class="screenshots">
-                <div class="screenshot">
-                    <img src="screenshots/hybrid-clusters-overview.png" alt="Hybrid Clusters">
-                    <div class="screenshot-caption">Multi-cluster overview - AWS EKS + Local Kind<br><small>Shows both cloud and local Kubernetes clusters managed from one terminal</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/helm-deployments-both.png" alt="Helm Deployments">
-                    <div class="screenshot-caption">Helm deployments across both environments<br><small>Same application running in both cloud and local clusters</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/kubectl-contexts.png" alt="Kubectl Contexts">
-                    <div class="screenshot-caption">Multi-context management with kubectl<br><small>Switching between different Kubernetes environments seamlessly</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/python-monitoring-output.png" alt="Python Monitoring">
-                    <div class="screenshot-caption">Python automation scripts for support tasks<br><small>Automated health monitoring across hybrid cloud environments</small></div>
-                </div>
-            </div>
-
-            <h3>🎯 Key Achievements:</h3>
-            <ul class="skill-list">
-                <li>Built hybrid cloud architecture (AWS EKS + local Kubernetes)</li>
-                <li>Implemented multi-cluster Helm deployments</li>
-                <li>Created Python automation scripts for support tasks</li>
-                <li>Demonstrated cross-environment troubleshooting</li>
-                <li>Developed support runbooks and procedures</li>
-                <li>Achieved 60% cost savings through hybrid approach</li>
-            </ul>
-
-            <a href="https://github.com/username/hybrid-cloud-support" class="github-link">View Source Code</a>
-        </div>
-
-        <div class="project">
-            <h2>🔐 Project 5: Enterprise Secrets Management with HashiCorp Vault</h2>
-            <p><strong>Duration:</strong> 1 hour setup + documentation</p>
-            
-            <div class="tech-stack">
-                <span class="tech">HashiCorp Vault</span>
-                <span class="tech">PostgreSQL</span>
-                <span class="tech">Docker Compose</span>
-                <span class="tech">Python</span>
-                <span class="tech">Dynamic Credentials</span>
-                <span class="tech">Policy as Code</span>
-                <span class="tech">Terraform</span>
-                <span class="tech">AWS KMS</span>
-                <span class="tech">Kubernetes</span>
-                <span class="tech">Security</span>
-            </div>
-
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-value">Zero</div>
-                    <div>Long-lived Passwords</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">1hr</div>
-                    <div>Auto-rotation TTL</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">100%</div>
-                    <div>Audit Logging</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">1hr</div>
-                    <div>Setup Time</div>
-                </div>
-            </div>
-
-            <div class="screenshots">
-                <div class="screenshot">
-                    <img src="screenshots/Screenshot 2025-08-17 111322.png" alt="Vault Dashboard">
-                    <div class="screenshot-caption">Vault Dashboard - Enterprise secrets management interface<br><small>HashiCorp Vault web UI showing system status and navigation</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/app-secrets.png" alt="Application Secrets">
-                    <div class="screenshot-caption">Application Secrets - Centralized configuration storage<br><small>Encrypted key-value storage for API keys and application config</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/dynamic-credentials.png" alt="Dynamic Credentials">
-                    <div class="screenshot-caption">Dynamic Database Credentials - Auto-rotating PostgreSQL access<br><small>Temporary credentials with 1-hour TTL eliminating static passwords</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/secrets-engines.png" alt="Secrets Engines">
-                    <div class="screenshot-caption">Secrets Engines - Multiple authentication backends<br><small>Database and KV engines for different types of secret management</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/cli-demo.png" alt="CLI Demo">
-                    <div class="screenshot-caption">CLI Integration - Command-line secrets generation<br><small>Terminal showing automated credential generation via Vault CLI</small></div>
-                </div>
-            </div>
-
-            <h3>🎯 Key Achievements:</h3>
-            <ul class="skill-list">
-                <li>Eliminated hardcoded passwords through dynamic credential rotation</li>
-                <li>Implemented centralized secrets management with encryption at rest</li>
-                <li>Built policy-as-code framework for granular access control</li>
-                <li>Integrated multi-cloud authentication (AWS IAM + Kubernetes)</li>
-                <li>Achieved SOC2/PCI compliance with complete audit logging</li>
-                <li>Demonstrated enterprise security architecture patterns</li>
-            </ul>
-
-            <a href="https://github.com/username/vault-secrets-management" class="github-link">View Source Code</a>
-        </div>
-
-        <div class="project">
-            <h2>📊 Project 6: Real-time Business Monitoring Dashboard</h2>
-            <p><strong>Duration:</strong> 1 hour setup + documentation</p>
-            
-            <div class="tech-stack">
-                <span class="tech">Prometheus</span>
-                <span class="tech">Grafana</span>
-                <span class="tech">Node.js</span>
-                <span class="tech">Docker Compose</span>
-                <span class="tech">Business Metrics</span>
-                <span class="tech">APM</span>
-                <span class="tech">Real-time Analytics</span>
-                <span class="tech">Custom Dashboards</span>
-                <span class="tech">Performance Monitoring</span>
-                <span class="tech">Alerting</span>
-            </div>
-
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-value">Real-time</div>
-                    <div>Business Metrics</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">150k</div>
-                    <div>Revenue Tracking</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">1500</div>
-                    <div>Active Users</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">1hr</div>
-                    <div>Setup Time</div>
-                </div>
-            </div>
-
-            <div class="screenshots">
-                <div class="screenshot">
-                    <img src="screenshots/business-dashboard-overview.png" alt="Business Dashboard">
-                    <div class="screenshot-caption">Grafana Business Dashboard - Real-time KPIs and metrics<br><small>Executive dashboard showing revenue, users, and performance metrics</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/prometheus-targets-status.png" alt="Prometheus Targets">
-                    <div class="screenshot-caption">Prometheus Targets - Metrics collection status<br><small>Shows all monitored services and their health status</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/prometheus-revenue-query.png" alt="Revenue Query">
-                    <div class="screenshot-caption">Prometheus Query - Live revenue data<br><small>Real-time business metrics query showing revenue tracking</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/performance-metrics-chart.png" alt="Performance Chart">
-                    <div class="screenshot-caption">Performance Metrics - Response time and error tracking<br><small>Time series charts showing application performance over time</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/real-time-data-generation.png" alt="Data Generation">
-                    <div class="screenshot-caption">Real-time Data - API testing and metrics generation<br><small>Terminal showing live API calls generating business metrics</small></div>
-                </div>
-            </div>
-
-            <h3>🎯 Key Achievements:</h3>
-            <ul class="skill-list">
-                <li>Built real-time business intelligence dashboard with Grafana</li>
-                <li>Implemented custom metrics collection for revenue and user tracking</li>
-                <li>Created application performance monitoring (APM) system</li>
-                <li>Developed business KPI visualization and alerting</li>
-                <li>Demonstrated site reliability engineering practices</li>
-                <li>Integrated Prometheus for enterprise-grade metrics collection</li>
-            </ul>
-
-            <a href="https://github.com/username/monitoring-dashboard" class="github-link">View Source Code</a>
-        </div>
-
-        <div class="project">
-            <h2>🏢 Project 7: Terraform Multi-Environment Infrastructure</h2>
-            <p><strong>Duration:</strong> 30 minutes setup + documentation</p>
-            
-            <div class="tech-stack">
-                <span class="tech">Terraform</span>
-                <span class="tech">AWS</span>
-                <span class="tech">Infrastructure as Code</span>
-                <span class="tech">Multi-Environment</span>
-                <span class="tech">Terraform Modules</span>
-                <span class="tech">HCL</span>
-                <span class="tech">Multi-Region</span>
-                <span class="tech">VPC</span>
-                <span class="tech">EC2</span>
-                <span class="tech">Automation</span>
-            </div>
-
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-value">3</div>
-                    <div>Environments</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">3</div>
-                    <div>AWS Regions</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">45+</div>
-                    <div>Resources Planned</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">30min</div>
-                    <div>Setup Time</div>
-                </div>
-            </div>
-
-            <div class="screenshots">
-                <div class="screenshot">
-                    <img src="screenshots/terraform-init.png" alt="Terraform Init">
-                    <div class="screenshot-caption">Terraform Init - Provider download and initialization<br><small>AWS provider successfully downloaded and backend initialized</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/terraform-validate.png" alt="Terraform Validate">
-                    <div class="screenshot-caption">Terraform Validate - Configuration syntax validation<br><small>All configuration files validated successfully with no errors</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/terraform-plan.png" alt="Terraform Plan">
-                    <div class="screenshot-caption">Terraform Plan - Infrastructure planning and resource graph<br><small>45+ resources planned across 3 environments with dependency resolution</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/terraform-structure.png" alt="Project Structure">
-                    <div class="screenshot-caption">Project Structure - Modular Terraform organization<br><small>Clean separation of environments, modules, and configuration files</small></div>
-                </div>
-            </div>
-
-            <h3>🎯 Key Achievements:</h3>
-            <ul class="skill-list">
-                <li>Built multi-environment infrastructure with Terraform modules</li>
-                <li>Implemented Infrastructure as Code (IaC) best practices</li>
-                <li>Created reusable Terraform modules for consistent deployments</li>
-                <li>Demonstrated multi-region AWS architecture (us-east-1, us-west-2, eu-west-1)</li>
-                <li>Established environment-specific resource sizing and configuration</li>
-                <li>Showcased enterprise-level infrastructure automation patterns</li>
-            </ul>
-
-            <a href="https://github.com/username/terraform-multicloud" class="github-link">View Source Code</a>
-        </div>
-
-        <div class="project">
-            <h2>🔄 Project 8: GitOps Continuous Deployment with ArgoCD</h2>
-            <p><strong>Duration:</strong> 1 hour setup + documentation</p>
-            
-            <div class="tech-stack">
-                <span class="tech">ArgoCD</span>
-                <span class="tech">GitOps</span>
-                <span class="tech">Kubernetes</span>
-                <span class="tech">Kind</span>
-                <span class="tech">GitHub Actions</span>
-                <span class="tech">CI/CD Pipeline</span>
-                <span class="tech">Continuous Deployment</span>
-                <span class="tech">Automated Sync</span>
-                <span class="tech">Self-Healing</span>
-                <span class="tech">Multi-Environment</span>
-            </div>
-
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-value">Git-based</div>
-                    <div>Deployment Pipeline</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">Auto</div>
-                    <div>Sync & Healing</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">100%</div>
-                    <div>Declarative Config</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">1hr</div>
-                    <div>Setup Time</div>
-                </div>
-            </div>
-
-            <div class="screenshots">
-                <div class="screenshot">
-                    <img src="screenshots/kind-cluster-creation-success.png" alt="Kind Cluster Creation">
-                    <div class="screenshot-caption">Kind Cluster - Local Kubernetes setup<br><small>Terminal showing successful Kind cluster creation for GitOps demo</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/argocd-installation-progress.png" alt="ArgoCD Installation">
-                    <div class="screenshot-caption">ArgoCD Installation - GitOps platform setup<br><small>Installing ArgoCD components into Kubernetes cluster</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/argocd-pods-running.png" alt="ArgoCD Pods">
-                    <div class="screenshot-caption">ArgoCD Pods - All services running<br><small>All ArgoCD components successfully deployed and healthy</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/argocd-login-page.png" alt="ArgoCD Login">
-                    <div class="screenshot-caption">ArgoCD UI - Login interface<br><small>Web interface for GitOps application management</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/argocd-dashboard-empty.png" alt="ArgoCD Dashboard">
-                    <div class="screenshot-caption">ArgoCD Dashboard - Application management<br><small>Main interface ready for GitOps application deployment</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/github-repo-creation.png" alt="GitHub Repository">
-                    <div class="screenshot-caption">GitHub Repository - GitOps source of truth<br><small>Git repository containing Kubernetes manifests and CI/CD pipeline</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/argocd-simple-app-synced.png" alt="Application Synced">
-                    <div class="screenshot-caption">Application Synced - GitOps deployment success<br><small>ArgoCD showing application successfully synced from Git repository</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/argocd-tree-view-deployment.png" alt="Tree View">
-                    <div class="screenshot-caption">Resource Tree - Kubernetes topology<br><small>Detailed view of deployed resources and their relationships</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/after-scaling-3-pods.png" alt="Scaled Pods">
-                    <div class="screenshot-caption">GitOps Scaling - Automated deployment<br><small>Application automatically scaled from 2 to 3 pods via Git commit</small></div>
-                </div>
-            </div>
-
-            <h3>🎯 Key Achievements:</h3>
-            <ul class="skill-list">
-                <li>Implemented complete GitOps workflow with ArgoCD for automated deployments</li>
-                <li>Built CI/CD pipeline with GitHub Actions for validation and testing</li>
-                <li>Created declarative configuration management with Git as single source of truth</li>
-                <li>Demonstrated self-healing infrastructure with automatic drift correction</li>
-                <li>Established GitOps best practices with automated sync and rollback capabilities</li>
-                <li>Integrated Kubernetes cluster management with Kind for local development</li>
-            </ul>
-
-            <a href="https://github.com/Buik1/gitops-argocd" class="github-link">View Source Code</a>
-        </div>
-
-        <div class="project">
-            <h2>🕸️ Project 9: Istio Service Mesh with Microservices</h2>
-            <p><strong>Duration:</strong> 45 minutes setup + documentation</p>
-            
-            <div class="tech-stack">
-                <span class="tech">Istio</span>
-                <span class="tech">Service Mesh</span>
-                <span class="tech">Microservices</span>
-                <span class="tech">mTLS</span>
-                <span class="tech">Envoy Proxy</span>
-                <span class="tech">Traffic Management</span>
-                <span class="tech">Security Policies</span>
-                <span class="tech">Load Balancing</span>
-                <span class="tech">Observability</span>
-                <span class="tech">Docker Compose</span>
-            </div>
-
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-value">3</div>
-                    <div>Microservices</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">100%</div>
-                    <div>mTLS Coverage</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">99.8%</div>
-                    <div>Success Rate</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">45min</div>
-                    <div>Setup Time</div>
-                </div>
-            </div>
-
-            <div class="screenshots">
-                <div class="screenshot">
-                    <img src="screenshots/istio-frontend.png" alt="Istio Frontend">
-                    <div class="screenshot-caption">Frontend Service - Service mesh interface and features<br><small>Main microservice showing Istio service mesh capabilities</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/istio-backend.png" alt="Istio Backend">
-                    <div class="screenshot-caption">Backend Service - API gateway with security features<br><small>Backend microservice with mTLS and authorization policies</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/istio-database.png" alt="Istio Database">
-                    <div class="screenshot-caption">Database Service - Data layer with mesh security<br><small>Database microservice protected by service mesh policies</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/istio-dashboard.png" alt="Istio Dashboard">
-                    <div class="screenshot-caption">Service Mesh Dashboard - Traffic and security metrics<br><small>Management interface showing mesh status and performance</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/istio-container.png" alt="Istio Containers">
-                    <div class="screenshot-caption">Container Architecture - Microservices deployment<br><small>Docker containers showing service mesh microservices architecture</small></div>
-                </div>
-            </div>
-
-            <h3>🎯 Key Achievements:</h3>
-            <ul class="skill-list">
-                <li>Implemented Istio service mesh for microservices communication</li>
-                <li>Configured mTLS encryption for 100% of inter-service traffic</li>
-                <li>Built traffic management with multiple load balancing algorithms</li>
-                <li>Created security policies and authorization rules</li>
-                <li>Demonstrated enterprise microservices architecture patterns</li>
-                <li>Established observability and distributed tracing capabilities</li>
-            </ul>
-
-            <a href="https://github.com/username/istio-service-mesh" class="github-link">View Source Code</a>
-        </div>
-
-        <div class="project">
-            <h2>🔍 Project 10: ELK Stack Centralized Logging</h2>
-            <p><strong>Duration:</strong> 1 hour setup + documentation</p>
-            
-            <div class="tech-stack">
-                <span class="tech">ELK Stack</span>
-                <span class="tech">Elasticsearch</span>
-                <span class="tech">Logstash</span>
-                <span class="tech">Kibana</span>
-                <span class="tech">Filebeat</span>
-                <span class="tech">Docker Compose</span>
-                <span class="tech">Log Processing</span>
-                <span class="tech">Observability</span>
-                <span class="tech">Real-time Analytics</span>
-                <span class="tech">Centralized Logging</span>
-            </div>
-
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-value">4</div>
-                    <div>ELK Components</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">Real-time</div>
-                    <div>Log Processing</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">100%</div>
-                    <div>Log Coverage</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">1hr</div>
-                    <div>Setup Time</div>
-                </div>
-            </div>
-
-            <div class="screenshots">
-                <div class="screenshot">
-                    <img src="screenshots/elk-kibana-dashboard.png" alt="Kibana Dashboard">
-                    <div class="screenshot-caption">Kibana Dashboard - Centralized log management interface<br><small>Main dashboard showing log analytics and real-time monitoring</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/elk-log-discovery.png" alt="Log Discovery">
-                    <div class="screenshot-caption">Log Discovery - Real-time log streaming and filtering<br><small>Live log exploration with advanced search and filtering capabilities</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/elk-visualizations.png" alt="ELK Visualizations">
-                    <div class="screenshot-caption">Data Visualizations - Charts and analytics<br><small>Custom charts showing error rates, response times, and traffic patterns</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/elk-elasticsearch-health.png" alt="Elasticsearch Health">
-                    <div class="screenshot-caption">Elasticsearch Cluster - Health and performance metrics<br><small>Cluster status showing indexing performance and search capabilities</small></div>
-                </div>
-                <div class="screenshot">
-                    <img src="screenshots/elk-docker-services.png" alt="ELK Services">
-                    <div class="screenshot-caption">Docker Services - Complete ELK stack running<br><small>All ELK components deployed and running via Docker Compose</small></div>
-                </div>
-            </div>
-
-            <h3>🎯 Key Achievements:</h3>
-            <ul class="skill-list">
-                <li>Implemented complete ELK Stack for centralized log management</li>
-                <li>Built real-time log processing pipeline with Logstash</li>
-                <li>Created custom Kibana dashboards for log analytics and monitoring</li>
-                <li>Configured Filebeat for automated log collection from multiple sources</li>
-                <li>Demonstrated enterprise observability and site reliability engineering</li>
-                <li>Established scalable logging architecture for microservices monitoring</li>
-            </ul>
-
-            <a href="https://github.com/username/elk-centralized-logging" class="github-link">View Source Code</a>
-        </div>
-
-        <div class="cost-summary">
-            <h2>📊 Portfolio Development Summary</h2>
-            <div class="metrics">
-                <div class="metric" style="background: rgba(255,255,255,0.2); color: white;">
-                    <div class="metric-value" style="color: white;">16hrs</div>
-                    <div>Total Development Time</div>
-                </div>
-                <div class="metric" style="background: rgba(255,255,255,0.2); color: white;">
-                    <div class="metric-value" style="color: white;">10</div>
-                    <div>Complete Projects</div>
-                </div>
-                <div class="metric" style="background: rgba(255,255,255,0.2); color: white;">
-                    <div class="metric-value" style="color: white;">55+</div>
-                    <div>Technologies</div>
-                </div>
-                <div class="metric" style="background: rgba(255,255,255,0.2); color: white;">
-                    <div class="metric-value" style="color: white;">Enterprise</div>
-                    <div>Skills Level</div>
-                </div>
-            </div>
-            <p style="font-size: 1.2rem; margin-top: 20px;">
-                <strong>Production-Ready DevOps Portfolio</strong><br>
-                Demonstrating enterprise-level capabilities across cloud infrastructure and automation
-            </p>
-        </div>
-
-        <div class="skills">
-            <div class="skill-category">
-                <h3>🏗 Infrastructure & Cloud</h3>
-                <ul class="skill-list">
-                    <li>Terraform (Infrastructure as Code)</li>
-                    <li>Multi-Environment Architecture</li>
-                    <li>AWS Multi-Region Deployment</li>
-                    <li>Amazon EKS (Kubernetes)</li>
-                    <li>Hybrid Cloud Architecture</li>
-                    <li>AWS Lambda (Serverless)</li>
-                    <li>AWS VPC & Networking</li>
-                    <li>AWS EC2 & Auto Scaling</li>
-                    <li>Infrastructure Automation</li>
-                </ul>
-            </div>
-            <div class="skill-category">
-                <h3>🐳 Containers & Orchestration</h3>
-                <ul class="skill-list">
-                    <li>Docker (Containerization)</li>
-                    <li>Kubernetes (Multi-cluster)</li>
-                    <li>Helm (Package Management)</li>
-                    <li>Kind (Local Development)</li>
-                    <li>Container Security</li>
-                    <li>Multi-stage Builds</li>
-                </ul>
-            </div>
-            <div class="skill-category">
-                <h3>📊 Monitoring & Observability</h3>
-                <ul class="skill-list">
-                    <li>Grafana (Visualization & Dashboards)</li>
-                    <li>Prometheus (Metrics Collection)</li>
-                    <li>Application Performance Monitoring (APM)</li>
-                    <li>Business Intelligence Dashboards</li>
-                    <li>Real-time Analytics</li>
-                    <li>Custom Metrics & KPIs</li>
-                    <li>Site Reliability Engineering</li>
-                    <li>Performance Monitoring</li>
-                </ul>
-            </div>
-            <div class="skill-category">
-                <h3>🔄 CI/CD & GitOps</h3>
-                <ul class="skill-list">
-                    <li>ArgoCD (GitOps Continuous Deployment)</li>
-                    <li>GitHub Actions (4-stage pipelines)</li>
-                    <li>GitOps Workflow Management</li>
-                    <li>Automated Testing (Jest/Supertest)</li>
-                    <li>Security Scanning (npm audit)</li>
-                    <li>Multi-stage Docker Builds</li>
-                    <li>Kustomize (Configuration Management)</li>
-                    <li>Self-Healing Infrastructure</li>
-                </ul>
-            </div>
-            <div class="skill-category">
-                <h3>🕸️ Service Mesh & Microservices</h3>
-                <ul class="skill-list">
-                    <li>Istio (Service Mesh Platform)</li>
-                    <li>Envoy Proxy (Sidecar Injection)</li>
-                    <li>mTLS (Mutual TLS Encryption)</li>
-                    <li>Traffic Management & Load Balancing</li>
-                    <li>Security Policies & Authorization</li>
-                    <li>Microservices Architecture</li>
-                    <li>Service-to-Service Communication</li>
-                    <li>Distributed Tracing & Observability</li>
-                </ul>
-            </div>
-            <div class="skill-category">
-                <h3>🔐 Security & Compliance</h3>
-                <ul class="skill-list">
-                    <li>HashiCorp Vault (Secrets Management)</li>
-                    <li>Dynamic Credential Rotation</li>
-                    <li>Policy as Code (RBAC)</li>
-                    <li>Zero Trust Architecture</li>
-                    <li>SOC2/PCI Compliance</li>
-                    <li>Audit Logging</li>
-                    <li>Multi-Cloud Authentication</li>
-                </ul>
-            </div>
-            <div class="skill-category">
-                <h3>💻 Development & Languages</h3>
-                <ul class="skill-list">
-                    <li>Python (hvac library)</li>
-                    <li>Node.js & Express</li>
-                    <li>React & TypeScript</li>
-                    <li>JavaScript ES6+</li>
-                    <li>RESTful API Design</li>
-                </ul>
-            </div>
-        </div>
+<section class="hero">
+    <div class="kicker">Senior Cloud &amp; Infrastructure Engineer</div>
+    <h1>I run production like it&rsquo;s somebody&rsquo;s paycheque.</h1>
+    <p class="lede">
+        Because in fintech it usually is. I&rsquo;ve spent the last six years
+        keeping payment platforms on their feet with AWS, EKS, Terraform, and a
+        lot of boring, quiet ops work that nobody notices until it stops.
+    </p>
+    <div class="hero-meta">
+        <span>Lagos, Nigeria &nbsp;·&nbsp; WAT (UTC+1)</span>
+        <span>Open to remote worldwide</span>
+        <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
+        <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
+        <a href="cv.html">CV</a>
     </div>
+</section>
 
-    <footer>
-        <div class="container">
-            <h3>🎯 Ready for DevOps Engineering Roles</h3>
-            <p>This portfolio demonstrates production-ready skills in cloud infrastructure, automation, and monitoring.</p>
-            <p>All projects are fully documented, reproducible, and cost-optimized.</p>
-            <p style="margin-top: 20px;">
-                <a href="mailto:your.email@example.com" class="github-link">Contact Me</a>
-                <a href="https://linkedin.com/in/yourprofile" class="github-link">LinkedIn</a>
-                <a href="https://github.com/yourusername" class="github-link">GitHub</a>
-            </p>
-        </div>
-    </footer>
+<hr>
+
+<h2>What I do, in plain words</h2>
+<p>
+    I look after the machines and pipelines that run a fintech transaction
+    platform. Day to day that means EKS clusters, Terraform modules, GitHub
+    Actions, ArgoCD, a lot of IAM, and a Grafana tab that&rsquo;s always open.
+    When something breaks at 2am, I&rsquo;m the one paging in. When something
+    doesn&rsquo;t break, it&rsquo;s usually because I already paged in at 2am
+    three weeks ago and quietly fixed the root cause.
+</p>
+<p>
+    I care about three things, in this order: reliability, cost, and the
+    developer experience of the engineers shipping on top of the platform. I
+    treat all three as measurable, and I grind the numbers down over time.
+</p>
+
+<h2>Selected work</h2>
+<p class="meta">A few things I&rsquo;ve built or fixed. Most of the details are stripped of proprietary names, but the decisions and numbers are real.</p>
+
+<ul class="case-list">
+    <li>
+        <div class="case-meta">Case study &nbsp;·&nbsp; Fintech &nbsp;·&nbsp; 2023</div>
+        <h3><a href="writing/eks-migration-zeeh.html">Migrating a fintech platform to EKS without a maintenance window</a></h3>
+        <p>
+            Thirty-odd services, one legacy EC2 fleet, zero planned downtime. How
+            we moved payments traffic to EKS in waves over eight weeks and came out
+            the other side with 40% fewer incidents and a 25% smaller bill.
+        </p>
+        <div class="tags"><span class="tag">eks</span><span class="tag">terraform</span><span class="tag">argocd</span><span class="tag">migration</span></div>
+    </li>
+
+    <li>
+        <div class="case-meta">Postmortem &nbsp;·&nbsp; Incident &nbsp;·&nbsp; 2024</div>
+        <h3><a href="writing/karpenter-incident.html">The 2am Karpenter incident: why our autoscaler made the outage worse</a></h3>
+        <p>
+            A peak-hour latency spike turned into 18 minutes of partial
+            unavailability because our HPA and Karpenter were fighting each other
+            under load. What the graphs said. What we actually changed.
+        </p>
+        <div class="tags"><span class="tag">karpenter</span><span class="tag">hpa</span><span class="tag">incident</span><span class="tag">postmortem</span></div>
+    </li>
+
+    <li>
+        <div class="case-meta">Case study &nbsp;·&nbsp; Platform &nbsp;·&nbsp; 2023</div>
+        <h3><a href="writing/terraform-gitops-rollout.html">From click-ops to GitOps: rebuilding the deployment story in a quarter</a></h3>
+        <p>
+            Replacing a tangle of manual AWS console changes and half-working
+            Jenkins jobs with Terraform modules and an ArgoCD pull model. The
+            layout we landed on, the pieces I&rsquo;d change in hindsight.
+        </p>
+        <div class="tags"><span class="tag">terraform</span><span class="tag">gitops</span><span class="tag">github-actions</span></div>
+    </li>
+
+    <li>
+        <div class="case-meta">Case study &nbsp;·&nbsp; Cost &nbsp;·&nbsp; 2024</div>
+        <h3><a href="writing/cost-25-percent.html">How we cut the AWS bill by a quarter without touching engineering velocity</a></h3>
+        <p>
+            Rightsizing is boring and it works. Spot instances plus Karpenter
+            consolidation, savings plans on the steady state, and one surprisingly
+            expensive NAT gateway that was quietly eating $900 a month.
+        </p>
+        <div class="tags"><span class="tag">finops</span><span class="tag">karpenter</span><span class="tag">rightsizing</span></div>
+    </li>
+
+    <li>
+        <div class="case-meta">Case study &nbsp;·&nbsp; Observability &nbsp;·&nbsp; 2023</div>
+        <h3><a href="writing/observability-stack.html">Picking an observability stack for a team of eight</a></h3>
+        <p>
+            Datadog or Prometheus plus Grafana plus Loki? We ran both for six
+            weeks. Here&rsquo;s what we kept, what we dropped, and the RED/USE
+            dashboards that ended up actually getting looked at.
+        </p>
+        <div class="tags"><span class="tag">datadog</span><span class="tag">prometheus</span><span class="tag">grafana</span><span class="tag">loki</span></div>
+    </li>
+
+    <li>
+        <div class="case-meta">Note &nbsp;·&nbsp; Security &nbsp;·&nbsp; 2024</div>
+        <h3><a href="writing/iam-least-privilege.html">IAM least privilege without losing your weekend</a></h3>
+        <p>
+            How I build IAM policies in practice. A workflow for going from
+            permissive starter policies to tight, auditable ones using
+            CloudTrail, IAM Access Analyzer, and a bit of patience.
+        </p>
+        <div class="tags"><span class="tag">iam</span><span class="tag">aws</span><span class="tag">security</span></div>
+    </li>
+
+    <li>
+        <div class="case-meta">Side project &nbsp;·&nbsp; 2024</div>
+        <h3><a href="writing/job-bot.html">Job Bot: a tiny personal ops project for finding remote roles</a></h3>
+        <p>
+            A small Node + SQLite tool I built for myself. Pulls remote DevOps
+            listings from half a dozen boards, scores them against my profile,
+            and drafts tailored CVs. Nothing fancy, but I use it every morning.
+        </p>
+        <div class="tags"><span class="tag">node</span><span class="tag">sqlite</span><span class="tag">gemini</span><span class="tag">side-project</span></div>
+    </li>
+</ul>
+
+<h2>Stack I reach for</h2>
+<dl class="stack">
+    <dt>Cloud</dt>
+    <dd>AWS (EKS, EC2, VPC, IAM, KMS, Lambda, S3, CloudWatch, Secrets Manager). Some OCI. A bit of GCP where the job asks.</dd>
+
+    <dt>Containers</dt>
+    <dd>Kubernetes, Docker, Helm, Karpenter, Cluster Autoscaler, cert-manager, external-dns.</dd>
+
+    <dt>IaC</dt>
+    <dd>Terraform (mostly). CloudFormation when I have to. Ansible for older boxes.</dd>
+
+    <dt>CI / CD</dt>
+    <dd>GitHub Actions, Jenkins, ArgoCD, GitOps. I prefer pull-based deploys.</dd>
+
+    <dt>Observability</dt>
+    <dd>Datadog, Prometheus, Grafana, Loki, CloudWatch. OpenTelemetry where the app team will adopt it.</dd>
+
+    <dt>Scripting</dt>
+    <dd>Python and Bash. Go occasionally for small utilities.</dd>
+
+    <dt>Opinions</dt>
+    <dd>Boring tech. Small blast radius. Runbooks before dashboards. Fix the on-call pain first, because a rested engineer is the cheapest reliability lever you have.</dd>
+</dl>
+
+<h2>Certifications</h2>
+<ul>
+    <li>Oracle Cloud Infrastructure Certified Multicloud Architect Professional</li>
+    <li>Oracle Cloud Infrastructure Certified Architect Associate</li>
+    <li>Oracle Cloud Infrastructure Certified Foundations Associate</li>
+    <li>Oracle Cloud Infrastructure Certified AI Foundations Associate</li>
+</ul>
+
+<h2>Get in touch</h2>
+<p>
+    I&rsquo;m open to senior / staff remote roles, full-time or contract. Fintech,
+    developer tools, and infra-heavy SaaS are where I do my best work, but I&rsquo;m
+    not religious about it. The easiest way to reach me is
+    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>.
+    Expect a reply the same day.
+</p>
+
+</div>
+
+<footer class="site">
+    <span>&copy; Chibuike Onuoha</span>
+    <span>Lagos &nbsp;·&nbsp; WAT</span>
+    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
+    <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
+    <span class="sp"></span>
+    <a href="colophon.html">Colophon</a>
+</footer>
+
 </body>
 </html>

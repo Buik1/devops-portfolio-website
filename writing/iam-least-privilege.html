@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IAM least privilege without losing your weekend · Chibuike Onuoha</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="top">
+    <a class="name" href="../index.html">Chibuike Onuoha</a>
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Writing</a>
+    <a href="../about.html">About</a>
+    <a href="../now.html">Now</a>
+    <a href="../cv.html">CV</a>
+</nav>
+
+<div class="wrap">
+
+<div class="kicker">Note &nbsp;·&nbsp; Security &nbsp;·&nbsp; Published Jan 2024</div>
+<h1 class="page">IAM least privilege without losing your weekend</h1>
+<p class="lede">
+    A practical workflow for taking a wide-open starter IAM policy and
+    ratcheting it down to something tight. No guessing, no theatre, no
+    weekend lost to policy simulation.
+</p>
+
+<div class="tldr">
+    <strong>TL;DR</strong>
+    <p>Start permissive in staging. Let the workload run for a week. Ask IAM Access Analyzer for the actual actions used. Generate a tight policy from that. Review, trim, apply. Repeat for each workload. Total time per service: about 30 minutes, most of it waiting.</p>
+</div>
+
+<h2>The wrong way</h2>
+<p>
+    The way most people do this: stare at the AWS service API reference, try
+    to guess which actions the workload needs, write a policy, apply it,
+    watch things break, loosen it, watch things break differently. Lose a
+    weekend. End up with a policy that&rsquo;s still too wide because every
+    time you got tired you added a <code>*</code>.
+</p>
+
+<h2>The way I do it</h2>
+<ol>
+    <li><strong>Start permissive in staging.</strong> Give the service role the AWS-managed policy closest to what it needs, or a scoped <code>*</code> on one service. Let it run.</li>
+    <li><strong>Let the real usage collect.</strong> Give it at least a week, ideally a full on-call rotation so rare code paths exercise.</li>
+    <li><strong>Ask IAM Access Analyzer to generate a policy from usage.</strong> This is the key step and most people don&rsquo;t know it exists.</li>
+    <li><strong>Review the generated policy by hand.</strong> Trim conditions. Add resource constraints. Add a <code>Deny</code> for anything destructive that you don&rsquo;t want, even if the current workload doesn&rsquo;t use it.</li>
+    <li><strong>Apply to staging, watch for errors, then promote to prod.</strong></li>
+</ol>
+
+<h2>Step 3, concretely</h2>
+
+<div class="filename">bash</div>
+<pre><code># Kick off policy generation for a role based on its last 7 days of CloudTrail activity.
+aws accessanalyzer start-policy-generation \
+  --policy-generation-details '{
+    "principalArn": "arn:aws:iam::111111111111:role/payments-worker"
+  }' \
+  --region eu-west-1
+
+# Returns a jobId. Poll until it's done.
+aws accessanalyzer get-generated-policy \
+  --job-id &lt;jobId&gt; \
+  --include-resource-placeholders \
+  --region eu-west-1
+</code></pre>
+
+<p>
+    The generated policy is JSON, scoped to the actions Access Analyzer
+    actually saw being called. It&rsquo;ll include resource placeholders
+    like <code>&lt;BucketName&gt;</code> that you replace with the real ARNs.
+    It&rsquo;s not perfect, and you should not just apply it blindly, but
+    it&rsquo;s a better starting point than a blank policy editor.
+</p>
+
+<h2>What I always add by hand</h2>
+
+<h4>1. Resource constraints</h4>
+<p>
+    The generated policy will often say &ldquo;this role used
+    <code>s3:GetObject</code>&rdquo; without specifying which bucket. Scope
+    it to the buckets that actually matter.
+</p>
+
+<div class="filename">payments-worker policy (excerpt)</div>
+<pre><code>{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadConfigFromS3",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject"],
+      "Resource": [
+        "arn:aws:s3:::zeeh-payments-config-prod/*"
+      ]
+    },
+    {
+      "Sid": "WriteLedgerEvents",
+      "Effect": "Allow",
+      "Action": ["s3:PutObject"],
+      "Resource": [
+        "arn:aws:s3:::zeeh-payments-ledger-prod/events/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "s3:x-amz-server-side-encryption": "aws:kms"
+        }
+      }
+    }
+  ]
+}
+</code></pre>
+
+<h4>2. A deny on anything dangerous</h4>
+<p>
+    Even if the workload doesn&rsquo;t use it, I explicitly deny a handful of
+    destructive actions. This is belt-and-braces: if a future engineer
+    accidentally adds a permissive statement, this deny catches it.
+</p>
+
+<pre><code>{
+  "Sid": "DenyDestructive",
+  "Effect": "Deny",
+  "Action": [
+    "s3:DeleteBucket",
+    "kms:ScheduleKeyDeletion",
+    "iam:DeleteRole",
+    "iam:DeleteUser"
+  ],
+  "Resource": "*"
+}
+</code></pre>
+
+<h4>3. A source-IP or VPC endpoint condition, when applicable</h4>
+<p>
+    For roles assumed by compute inside a VPC, I pin the trust policy to
+    the VPC endpoint. Even if the credentials leak, they&rsquo;re useless
+    outside the VPC.
+</p>
+
+<pre><code>"Condition": {
+  "StringEquals": {
+    "aws:SourceVpce": "vpce-0a1b2c3d4e5f"
+  }
+}
+</code></pre>
+
+<h2>IRSA specifically</h2>
+<p>
+    For Kubernetes workloads on EKS I use IRSA (IAM Roles for Service
+    Accounts). Each workload gets its own role, trusted by its own service
+    account in its own namespace. No node-level credentials.
+</p>
+
+<div class="filename">terraform/modules/eks-service/iam.tf</div>
+<pre><code>data "aws_iam_policy_document" "assume_role" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    principals {
+      type        = "Federated"
+      identifiers = [var.oidc_provider_arn]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "${var.oidc_issuer_host}:sub"
+      values   = ["system:serviceaccount:${var.namespace}:${var.service_account}"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "${var.oidc_issuer_host}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "this" {
+  name               = "${var.namespace}-${var.service_account}"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+</code></pre>
+
+<h2>How I verify it</h2>
+<p>
+    Before I apply a tightened policy to production, I run one last sanity
+    check: the IAM policy simulator, pointed at the specific actions I
+    expect the workload to need. Not exhaustive, but catches the obvious
+    misses.
+</p>
+
+<pre><code>aws iam simulate-principal-policy \
+  --policy-source-arn arn:aws:iam::111111111111:role/payments-worker \
+  --action-names s3:GetObject s3:PutObject kms:Decrypt sqs:ReceiveMessage \
+  --resource-arns arn:aws:s3:::zeeh-payments-ledger-prod/events/foo \
+                  arn:aws:kms:eu-west-1:111111111111:key/abcd-1234 \
+  --output table
+</code></pre>
+
+<p>
+    Then I deploy to staging, watch CloudWatch logs for <code>AccessDenied</code>
+    for an hour, and if it&rsquo;s clean I promote to prod.
+</p>
+
+<h2>The audit cadence</h2>
+<p>
+    Policies drift. New features get added, someone adds a statement to
+    unblock themselves, the original tight policy loosens. I run an audit
+    quarterly:
+</p>
+<ol>
+    <li>List every custom IAM role we own.</li>
+    <li>For each role, run <code>get-generated-policy</code> again.</li>
+    <li>Diff the new generated policy against the current applied one.</li>
+    <li>Anywhere the applied policy grants more than the generated one needs, it&rsquo;s a candidate for trimming.</li>
+    <li>Anywhere the applied policy is missing something the role is actively using, I&rsquo;m about to cause an incident. Leave it alone.</li>
+</ol>
+
+<p>
+    Most quarters I find two or three candidates for trimming and one
+    drift-in-the-wrong-direction that reveals a change nobody documented.
+    Cheap insurance.
+</p>
+
+<hr>
+
+<p class="meta">Published January 2024.</p>
+
+</div>
+
+<footer class="site">
+    <span>&copy; Chibuike Onuoha</span>
+    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
+    <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From click-ops to GitOps · Chibuike Onuoha</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="top">
+    <a class="name" href="../index.html">Chibuike Onuoha</a>
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Writing</a>
+    <a href="../about.html">About</a>
+    <a href="../now.html">Now</a>
+    <a href="../cv.html">CV</a>
+</nav>
+
+<div class="wrap">
+
+<div class="kicker">Case study &nbsp;·&nbsp; Platform &nbsp;·&nbsp; Published Jul 2023</div>
+<h1 class="page">From click-ops to GitOps: rebuilding the deployment story in a quarter</h1>
+<p class="lede">
+    How I replaced a tangle of manual AWS console changes, half-working Jenkins
+    jobs, and a single shared <code>admin</code> IAM user with a clean
+    Terraform module layout, per-team state isolation, and ArgoCD pulling
+    from a monorepo. With the repo structure we landed on.
+</p>
+
+<div class="tldr">
+    <strong>TL;DR</strong>
+    <p>I found a platform where most infrastructure changes were made by hand in the AWS console by whoever was on call. I moved it, over roughly ten weeks, to a layered Terraform setup with strict state boundaries, a GitHub Actions plan/apply pipeline with approvals, and ArgoCD handling application rollouts. The biggest win wasn&rsquo;t technical. It was the audit trail.</p>
+</div>
+
+<h2>Before</h2>
+<p>
+    Most production changes were made directly in the AWS console. There was a
+    Jenkins instance that half the team used for deploys and half the team
+    didn&rsquo;t trust. There was a Terraform repo, but it was about 30%
+    behind reality, because every time a Terraform apply failed, the fastest
+    fix was to make the change in the console and move on. Drift built up.
+    Eventually you stop running plan at all because it&rsquo;s always noisy.
+</p>
+
+<p>There was also exactly one <code>admin</code> IAM user that everyone knew the password for. We&rsquo;ll come back to that.</p>
+
+<h2>What I wanted instead</h2>
+<ul>
+    <li>Every production change is a pull request. No exceptions.</li>
+    <li>State files are split so a mistake in one area can&rsquo;t blow up another.</li>
+    <li>Application deploys are pull-based from Git, so the cluster is always reconciling against a known-good source of truth.</li>
+    <li>No humans have AWS console write access to production, most of the time. Break-glass only.</li>
+    <li>Runbooks that reference the pipeline, not the console.</li>
+</ul>
+
+<h2>The repo layout</h2>
+<p>
+    I landed on three repos, not a monorepo. I know, I know. I like monorepos
+    too. But the application teams already had their own repos and merging
+    them would have been a fight I didn&rsquo;t want. Three repos, clean
+    boundaries, read-only data flow.
+</p>
+
+<div class="filename">infra-core/  (Terraform only, one team owns it)</div>
+<pre><code>infra-core/
+├── envs/
+│   ├── prod/
+│   │   ├── 00-network/       # VPC, subnets, NAT, route tables
+│   │   ├── 10-cluster/       # EKS control plane + node IAM
+│   │   ├── 20-platform/      # addons: ALB controller, external-dns, cert-manager,
+│   │   │                     #         karpenter, argocd, datadog operator
+│   │   └── 30-data/          # RDS, ElastiCache, MSK, S3 buckets
+│   └── staging/              # same shape, smaller sizing
+├── modules/
+│   ├── eks-cluster/
+│   ├── karpenter/
+│   ├── rds-postgres/
+│   └── s3-bucket/
+└── .github/workflows/
+    ├── plan.yml              # on every PR
+    └── apply.yml              # on merge to main, gated approval
+</code></pre>
+
+<div class="filename">gitops/  (ArgoCD watches this)</div>
+<pre><code>gitops/
+├── bootstrap/
+│   └── root-app.yaml         # the app-of-apps
+├── apps/
+│   ├── payments-api.yaml
+│   ├── webhook-dispatcher.yaml
+│   ├── ledger-service.yaml
+│   └── ...
+├── platform/
+│   ├── monitoring/           # grafana, alertmanager rules, loki config
+│   ├── ingress/              # alb controller crds, cluster-issuer
+│   └── policies/             # OPA / Kyverno policies
+└── environments/
+    ├── prod/values/          # per-env helm values overrides
+    └── staging/values/
+</code></pre>
+
+<p>
+    Each application team kept their Helm chart in their own app repo (the
+    third repo type). Their CI built an image, pushed it, and opened a PR to
+    <code>gitops/</code> that bumped the image tag in the correct values
+    file. Once merged, ArgoCD picked it up within 60 seconds.
+</p>
+
+<h2>State isolation</h2>
+<p>
+    I used S3 backend with a DynamoDB lock table per state file. Five state
+    files in prod, five in staging. I considered Terragrunt. I decided against
+    it because the team had never used it and I didn&rsquo;t want to
+    introduce one learning curve on top of another. Plain Terraform with a
+    directory convention is simpler than Terragrunt, for a small team.
+</p>
+
+<div class="filename">envs/prod/10-cluster/backend.tf</div>
+<pre><code>terraform {
+  required_version = "~> 1.7"
+  backend "s3" {
+    bucket         = "zeeh-tfstate-prod"
+    key            = "10-cluster/terraform.tfstate"
+    region         = "eu-west-1"
+    dynamodb_table = "zeeh-tfstate-prod-lock"
+    encrypt        = true
+    kms_key_id     = "alias/tfstate"
+  }
+}
+</code></pre>
+
+<p>
+    The cluster layer reads from the network layer using
+    <code>data "terraform_remote_state"</code>. The platform layer reads from
+    the cluster layer. Nothing writes back. This means a bad plan in
+    <code>20-platform</code> cannot touch VPC routing. It also means you can
+    rip out the platform layer without losing your cluster, which is useful
+    about twice a year.
+</p>
+
+<h2>The pipeline</h2>
+<p>
+    GitHub Actions. One workflow for plan on every PR, one for apply on
+    merge to <code>main</code> with a manual approval gate.
+</p>
+
+<div class="filename">.github/workflows/plan.yml</div>
+<pre><code>name: terraform plan
+on:
+  pull_request:
+    paths: ["envs/**", "modules/**"]
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        stack: [00-network, 10-cluster, 20-platform, 30-data]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::111111111111:role/github-plan-prod
+          aws-region: eu-west-1
+      - uses: hashicorp/setup-terraform@v3
+        with: { terraform_version: 1.7.5 }
+      - working-directory: envs/prod/${{ matrix.stack }}
+        run: |
+          terraform init -input=false
+          terraform plan -no-color -out=plan.tfplan | tee plan.txt
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const plan = fs.readFileSync('envs/prod/${{ matrix.stack }}/plan.txt','utf8');
+            const body = '### `' + '${{ matrix.stack }}' + '` plan\n\n```\n' + plan.slice(0, 60000) + '\n```';
+            github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: context.issue.number, body
+            });
+</code></pre>
+
+<p>
+    Plans are posted as PR comments. Reviewers read them before approving.
+    The apply workflow runs on merge, uses a different IAM role with actual
+    write permissions, and requires a manual approval in the
+    <code>prod-apply</code> environment. That approval is a human checkpoint.
+</p>
+
+<h2>OIDC instead of long-lived access keys</h2>
+<p>
+    The old pipeline used a Jenkins IAM user with an access key that was
+    rotated once every never. I killed that user and set up OIDC federation
+    from GitHub Actions to AWS. No static credentials. Each workflow run
+    assumes a role scoped to exactly what it needs.
+</p>
+
+<div class="filename">modules/github-oidc/main.tf</div>
+<pre><code>resource "aws_iam_openid_connect_provider" "github" {
+  url             = "https://token.actions.githubusercontent.com"
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
+}
+
+resource "aws_iam_role" "github_plan_prod" {
+  name = "github-plan-prod"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = { Federated = aws_iam_openid_connect_provider.github.arn }
+      Action = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+        }
+        StringLike = {
+          "token.actions.githubusercontent.com:sub" = "repo:ORG/infra-core:pull_request"
+        }
+      }
+    }]
+  })
+}
+</code></pre>
+
+<h2>What about that shared admin user?</h2>
+<p>
+    I didn&rsquo;t delete it on day one. I watched it for two weeks in
+    CloudTrail to see who was using it and what for. Most of the usage was
+    three specific kinds of thing: manual RDS parameter group changes,
+    ad-hoc S3 bucket creation, and IAM tweaks for new engineers. I wrote
+    Terraform for the first two, wrote a small onboarding runbook for the
+    third, and then on a quiet Friday I rotated the password, locked the
+    user out, and waited to see who complained. Two people did. Both of them
+    had cleaner alternatives available. A month later I deleted the user.
+</p>
+
+<aside class="note">
+    <strong>On breaking things on Fridays:</strong> I know, I know. But this
+    was reversible in 30 seconds (re-enable the user) and it was the fastest
+    way to find out who was still depending on it. Sometimes the safest way
+    to migrate is to turn the old thing off and see who yells.
+</aside>
+
+<h2>What changed for the team</h2>
+<ul>
+    <li>
+        <strong>Deploys stopped being scary.</strong> ArgoCD shows the current
+        state of every service in one place. Rollback is <code>git revert</code>
+        and wait 60 seconds, not &ldquo;SSH to the right box and run the right
+        thing&rdquo;.
+    </li>
+    <li>
+        <strong>Drift went from constant to rare.</strong> The console
+        write-access lockdown forced every change through Terraform. When drift
+        did happen (someone broke glass for a real reason), we noticed fast
+        because the next PR plan lit up.
+    </li>
+    <li>
+        <strong>Audit got easier.</strong> Every infrastructure change is a
+        merged PR with a plan attached. Every deploy is a git commit on the
+        gitops repo. Security review stopped asking &ldquo;who changed
+        this?&rdquo; because the answer was always one click away.
+    </li>
+    <li>
+        <strong>On-call changed shape.</strong> Before, on-call was 30% fixing
+        things and 70% worrying about what you might have forgotten to
+        change. After, on-call was mostly about actual incidents. Which is
+        still plenty, but it&rsquo;s the right kind of plenty.
+    </li>
+</ul>
+
+<h2>What I&rsquo;d do differently next time</h2>
+<ul>
+    <li><strong>Write the PR template first.</strong> I wrote it in week four and it should have been week one. The template forces reviewers to think about blast radius, rollback plan, and which state file is affected. Teams converge on good habits faster when the PR form nudges them.</li>
+    <li><strong>Budget a week for tfstate archaeology.</strong> The existing repo had enough drift that my first <code>terraform plan</code> in prod wanted to destroy three things I definitely needed. The fix was slow, manual, and boring. Plan for it.</li>
+    <li><strong>Pick OPA/Kyverno policies earlier.</strong> I left policy as a &ldquo;phase two&rdquo; and regretted it. Even a tiny set of &ldquo;no root in containers, no hostNetwork, no latest tag&rdquo; policies catches a lot of nonsense before it hits prod.</li>
+</ul>
+
+<hr>
+
+<p class="meta">Published July 2023. Lightly edited September 2023 for clarity on the OIDC module.</p>
+
+</div>
+
+<footer class="site">
+    <span>&copy; Chibuike Onuoha</span>
+    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
+    <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
+</footer>
+
+</body>
+</html>

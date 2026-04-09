@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing · Chibuike Onuoha</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="top">
+    <a class="name" href="../index.html">Chibuike Onuoha</a>
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Writing</a>
+    <a href="../about.html">About</a>
+    <a href="../now.html">Now</a>
+    <a href="../cv.html">CV</a>
+</nav>
+
+<div class="wrap">
+
+<div class="kicker">Writing</div>
+<h1 class="page">Case studies &amp; notes</h1>
+<p class="lede">
+    Long-form notes about things I&rsquo;ve built, broken, and fixed. Most of
+    these are sanitised versions of real production work. The numbers and
+    trade-offs are honest; the service names have been changed.
+</p>
+
+<ul class="case-list">
+    <li>
+        <div class="case-meta">Case study &nbsp;·&nbsp; Fintech &nbsp;·&nbsp; Nov 2023</div>
+        <h3><a href="eks-migration-zeeh.html">Migrating a fintech platform to EKS without a maintenance window</a></h3>
+        <p>Eight weeks, thirty services, zero planned downtime, 40% fewer incidents on the far side. The full timeline, the Terraform layout, and the two things that almost sank us.</p>
+    </li>
+    <li>
+        <div class="case-meta">Postmortem &nbsp;·&nbsp; Incident &nbsp;·&nbsp; Apr 2024</div>
+        <h3><a href="karpenter-incident.html">The 2am Karpenter incident: why our autoscaler made the outage worse</a></h3>
+        <p>Eighteen minutes of partial unavailability during a peak-traffic window. HPA and Karpenter were both doing exactly what we told them. Exactly what we told them was the problem.</p>
+    </li>
+    <li>
+        <div class="case-meta">Case study &nbsp;·&nbsp; Platform &nbsp;·&nbsp; Jul 2023</div>
+        <h3><a href="terraform-gitops-rollout.html">From click-ops to GitOps: rebuilding the deployment story in a quarter</a></h3>
+        <p>How I replaced a tangle of manual console changes and half-working Jenkins jobs with a clean Terraform module layout and ArgoCD. With the repo structure we landed on.</p>
+    </li>
+    <li>
+        <div class="case-meta">Case study &nbsp;·&nbsp; Cost &nbsp;·&nbsp; Feb 2024</div>
+        <h3><a href="cost-25-percent.html">How we cut the AWS bill by a quarter without touching engineering velocity</a></h3>
+        <p>The six things I did, ranked by how boring they were. Spoiler: the most boring one saved the most money. Also, the NAT gateway story.</p>
+    </li>
+    <li>
+        <div class="case-meta">Case study &nbsp;·&nbsp; Observability &nbsp;·&nbsp; Sep 2023</div>
+        <h3><a href="observability-stack.html">Picking an observability stack for a team of eight</a></h3>
+        <p>We ran Datadog and Prometheus-plus-Grafana-plus-Loki side by side for six weeks. What we kept, what we cut, and the dashboards that ended up actually getting used.</p>
+    </li>
+    <li>
+        <div class="case-meta">Note &nbsp;·&nbsp; Security &nbsp;·&nbsp; Jan 2024</div>
+        <h3><a href="iam-least-privilege.html">IAM least privilege without losing your weekend</a></h3>
+        <p>A practical workflow: start permissive, collect real usage with CloudTrail and Access Analyzer, then ratchet down. With the exact commands I use.</p>
+    </li>
+    <li>
+        <div class="case-meta">Side project &nbsp;·&nbsp; 2024</div>
+        <h3><a href="job-bot.html">Job Bot: a tiny personal ops project for finding remote roles</a></h3>
+        <p>I built a small Node tool that scrapes half a dozen remote job boards, scores listings against my profile, and drafts tailored CVs with Gemini. Full write-up.</p>
+    </li>
+</ul>
+
+</div>
+
+<footer class="site">
+    <span>&copy; Chibuike Onuoha</span>
+    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
+    <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
+</footer>
+
+</body>
+</html>

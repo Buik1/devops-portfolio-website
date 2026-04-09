@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About · Chibuike Onuoha</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="top">
+    <a class="name" href="index.html">Chibuike Onuoha</a>
+    <a href="index.html">Home</a>
+    <a href="writing/">Writing</a>
+    <a href="about.html" class="active">About</a>
+    <a href="now.html">Now</a>
+    <a href="cv.html">CV</a>
+</nav>
+
+<div class="wrap">
+
+<div class="kicker">About</div>
+<h1 class="page">Hi, I&rsquo;m Chibuike.</h1>
+
+<p class="lede">
+    I&rsquo;m a senior cloud and infrastructure engineer in Lagos. I&rsquo;ve
+    been doing ops, SRE, and platform work for about six years, mostly in
+    fintech, mostly on AWS.
+</p>
+
+<h2>How I got here</h2>
+<p>
+    I took a strange route in. I have an LL.B from the University of Ibadan.
+    Somewhere between the second and third year of law school I started hosting
+    side projects on a $5 DigitalOcean droplet, broke it trying to install
+    things the wrong way, and found that I liked fixing it more than I liked
+    tort law. I kept pulling that thread. I learned Linux from the man pages
+    and Stack Overflow. I learned networking from getting VPNs wrong. I
+    learned Kubernetes by standing up a single-node cluster at home and
+    watching it crash.
+</p>
+
+<p>
+    My first real infrastructure job was at Arravo in 2020, where I supported
+    cloud and on-prem systems for enterprise clients and got my first taste of
+    being the person someone calls at 4am. In 2022 I moved into fintech at
+    Zeeh Africa, and that&rsquo;s where most of the work on this site comes
+    from. Running payments infrastructure teaches you things about reliability
+    that nothing else does. Money being stuck is louder than a dashboard.
+</p>
+
+<h2>What I actually enjoy</h2>
+<p>
+    I like the boring parts. I like writing a runbook that makes the next
+    on-call&rsquo;s night easier. I like catching a bad IAM policy in review
+    before it becomes an incident. I like a clean Terraform module that six
+    engineers can reuse without emailing me about it. I like finding out that a
+    NAT gateway has been costing us $900 a month and turning it off.
+</p>
+<p>
+    I&rsquo;m less interested in shiny new tools for their own sake. I&rsquo;d
+    rather use a mature, well-understood piece of infrastructure with a known
+    failure mode than something new and beautiful that I can&rsquo;t debug at
+    3am. This is not a universal rule. I&rsquo;ll pick up new tools when there
+    is a real reason. But the default is boring.
+</p>
+
+<h2>How I work</h2>
+<ul>
+    <li><strong>Read the code first, the docs second.</strong> Docs lie. Code doesn&rsquo;t.</li>
+    <li><strong>Reversible before optimal.</strong> I&rsquo;d rather ship a reversible change twice than an irreversible change once.</li>
+    <li><strong>Small blast radius.</strong> Deploy to one cluster first. Canary. Wait. Then the rest.</li>
+    <li><strong>Write the runbook before the dashboard.</strong> A dashboard tells you something is wrong. A runbook tells you what to do about it.</li>
+    <li><strong>On-call is a design input.</strong> If a service pages its owner three times a week, that&rsquo;s a roadmap item, not a character flaw.</li>
+    <li><strong>Cost is a reliability concern.</strong> An infrastructure team that doesn&rsquo;t control cost eventually loses autonomy. I&rsquo;d rather watch the bill quietly than get told to cut it in half later.</li>
+</ul>
+
+<h2>Remote work</h2>
+<p>
+    I&rsquo;ve been fully remote for the past four years. I&rsquo;m used to
+    distributed teams, async standups, long-form writing in preference to
+    meetings, and incident response across time zones. I&rsquo;m in WAT
+    (UTC+1), which means I comfortably overlap with EMEA for a full day, US
+    East Coast through the morning and early afternoon, and APAC through my
+    evening. I keep a regular schedule and I answer on-call pages within SLA.
+</p>
+
+<h2>Outside of work</h2>
+<p>
+    I read too much. Mostly non-fiction, occasionally a mystery novel when I
+    need my brain to stop. I cook. I&rsquo;m slowly learning to play guitar, and
+    I am, honestly, still bad at it. I take my coffee black and my opinions on
+    YAML indentation seriously.
+</p>
+
+<p>
+    If any of this sounds useful for your team, the best way to reach me is
+    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>.
+</p>
+
+</div>
+
+<footer class="site">
+    <span>&copy; Chibuike Onuoha</span>
+    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
+    <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
+    <span class="sp"></span>
+    <a href="colophon.html">Colophon</a>
+</footer>
+
+</body>
+</html>

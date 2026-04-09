@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How we cut the AWS bill by a quarter · Chibuike Onuoha</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="top">
+    <a class="name" href="../index.html">Chibuike Onuoha</a>
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Writing</a>
+    <a href="../about.html">About</a>
+    <a href="../now.html">Now</a>
+    <a href="../cv.html">CV</a>
+</nav>
+
+<div class="wrap">
+
+<div class="kicker">Case study &nbsp;·&nbsp; Cost &nbsp;·&nbsp; Published Feb 2024</div>
+<h1 class="page">How we cut the AWS bill by a quarter without touching engineering velocity</h1>
+<p class="lede">
+    The six things I did, ranked by how boring they were. The most boring one
+    saved the most money. Also, the NAT gateway that was quietly eating $900
+    a month.
+</p>
+
+<div class="tldr">
+    <strong>TL;DR</strong>
+    <p>Dropped AWS spend by ~25% in one quarter. No service cuts, no feature deprioritisation, no &ldquo;do more with less&rdquo; speech. Roughly in order of impact: right-sizing, Karpenter consolidation with spot, savings plans on the steady state, NAT gateway consolidation, killing orphaned EBS volumes, and a smarter S3 lifecycle. The unglamorous stuff wins.</p>
+</div>
+
+<div class="metrics">
+    <div class="metric"><div class="n">-25%</div><div class="lbl">Total bill (quarter)</div></div>
+    <div class="metric"><div class="n">$900/mo</div><div class="lbl">One NAT gateway fix</div></div>
+    <div class="metric"><div class="n">0</div><div class="lbl">Features cut</div></div>
+</div>
+
+<h2>Where the money was going</h2>
+<p>
+    Before I changed anything, I spent a week just reading the Cost Explorer.
+    Not making changes, just looking. I exported a CSV of unblended costs by
+    service and day for the previous 90 days, dropped it into a notebook,
+    and made charts. I highly recommend doing this before touching anything.
+    Half the people who complain about AWS bills don&rsquo;t actually know
+    where the money goes.
+</p>
+
+<p>Our top line items, roughly:</p>
+
+<table>
+<thead><tr><th>Service</th><th>Share of bill</th><th>Comment</th></tr></thead>
+<tbody>
+<tr><td>EC2 (mostly EKS nodes)</td><td>~58%</td><td>Biggest target. Right-sizing + Karpenter + spot.</td></tr>
+<tr><td>RDS</td><td>~14%</td><td>Over-provisioned. Reserved instances, rightsize.</td></tr>
+<tr><td>Data transfer</td><td>~9%</td><td>NAT gateway egress was the surprise.</td></tr>
+<tr><td>S3</td><td>~6%</td><td>Long-tail storage, no lifecycle rules.</td></tr>
+<tr><td>CloudWatch Logs</td><td>~5%</td><td>Ingest was fine; retention was 5 years.</td></tr>
+<tr><td>Everything else</td><td>~8%</td><td>Not worth my time this quarter.</td></tr>
+</tbody>
+</table>
+
+<h2>1. Right-sizing (most boring, biggest win)</h2>
+<p>
+    Every engineer reading this already knows right-sizing is a thing. It
+    still wins. I ran
+    <a href="https://github.com/kubernetes-sigs/metrics-server">metrics-server</a>
+    data through a simple script that looked at peak and median CPU/memory
+    per deployment over 14 days, and produced a table of &ldquo;current
+    requests vs what you actually use&rdquo;.
+</p>
+
+<p>
+    Most services were requesting 2&ndash;3x what they peaked at. A couple were
+    requesting 10x. I&rsquo;m not going to name them because the engineers who
+    set them up were fine; they were just copying a known-working template
+    and nobody had gone back to check. This is the normal state of
+    infrastructure.
+</p>
+
+<div class="filename">scripts/rightsize.py (excerpt)</div>
+<pre><code>def recommend(peak_cpu, peak_mem, current_req):
+    # add 30% headroom on top of observed peak, snap to sane sizes
+    target_cpu = max(100, round_up_millicore(peak_cpu * 1.3))
+    target_mem = max(128, round_up_mebibyte(peak_mem * 1.3))
+    return {
+        "cpu":  target_cpu,
+        "mem":  target_mem,
+        "saving_pct_cpu": 1 - (target_cpu / current_req["cpu"]),
+        "saving_pct_mem": 1 - (target_mem / current_req["mem"]),
+    }
+</code></pre>
+
+<p>
+    I produced a per-service spreadsheet with current vs recommended and
+    walked each service owner through their row. Most of them said
+    &ldquo;yeah sure&rdquo; and I rolled the changes out over two weeks as
+    normal PRs. About 35% reduction in total requested CPU across the
+    cluster. The actual bill didn&rsquo;t move yet, because the nodes were
+    still there. Step 2 is what made it real.
+</p>
+
+<h2>2. Karpenter consolidation and spot</h2>
+<p>
+    Once the cluster had a pile of over-provisioned headroom, Karpenter
+    noticed. With <code>consolidationPolicy: WhenEmptyOrUnderutilized</code>
+    (which I later partially rolled back, see
+    <a href="karpenter-incident.html">the 2am incident</a>) it started
+    replacing under-used nodes with smaller ones and draining the rest. The
+    cluster shrank from 42 steady-state nodes to 27 over about four days,
+    without a single eviction that caused a problem.
+</p>
+<p>
+    Then I added a spot <code>NodePool</code> for workloads that could
+    tolerate interruption: the worker services, the async queue consumers,
+    the batch jobs. Not the payments API. Nothing on the hot path.
+</p>
+
+<div class="filename">k8s/karpenter/nodepool-spot.yaml</div>
+<pre><code>apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: spot-workers
+spec:
+  template:
+    metadata:
+      labels: { workload: batch }
+    spec:
+      taints:
+        - key: workload
+          value: batch
+          effect: NoSchedule
+      requirements:
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["spot"]
+        - key: karpenter.k8s.aws/instance-family
+          operator: In
+          values: ["m6i", "m7i", "c6i", "c7i"]
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        name: general
+  disruption:
+    consolidationPolicy: WhenEmptyOrUnderutilized
+    consolidateAfter: 2m
+  limits:
+    cpu: "300"
+</code></pre>
+
+<p>
+    The batch workloads got a toleration for the matching taint. Karpenter
+    placed them on spot. Savings on that portion of the fleet: ~65%.
+    Interruption rate: two a week on average, always handled gracefully
+    because the workers were already idempotent.
+</p>
+
+<h2>3. Savings plans on the steady state</h2>
+<p>
+    Once the cluster had been stable for a month, I bought a one-year
+    Compute Savings Plan for the boring on-demand baseline. I deliberately
+    under-bought (covered about 70% of the steady-state), because buying
+    exactly was going to lock me out of further right-sizing. 1-year,
+    no-upfront, ~30% discount on the covered portion. Easy money.
+</p>
+
+<aside class="note">
+    <strong>Rule of thumb I use:</strong> buy a commitment for <em>less</em>
+    than you currently use, not the full amount. You want room to keep
+    improving. A savings plan you&rsquo;re paying for but not fully using is
+    the most demoralising line on a cost report.
+</aside>
+
+<h2>4. The NAT gateway that ate $900 a month</h2>
+<p>
+    I found this one by accident. I was looking at data transfer costs and
+    noticed one NAT gateway was responsible for more than half of our
+    <code>NatGateway-Bytes</code> line. I dug into VPC Flow Logs in Athena and
+    found that a single service was pulling a machine learning model from a
+    public S3 bucket, every pod, every 15 minutes, in a different region.
+    Cross-region egress via NAT. The service had been deployed by a team
+    that rotated off the project a year before. Nobody had noticed.
+</p>
+<p>
+    Fix: move the bucket to the same region, add a gateway VPC endpoint for
+    S3 so the traffic doesn&rsquo;t touch the NAT at all, and cache the model
+    locally on the pod so it doesn&rsquo;t re-fetch every 15 minutes.
+    Savings: about $900/month, forever.
+</p>
+
+<div class="filename">terraform/10-cluster/vpc-endpoints.tf</div>
+<pre><code>resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = data.terraform_remote_state.network.outputs.vpc_id
+  service_name      = "com.amazonaws.${var.region}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = data.terraform_remote_state.network.outputs.private_route_table_ids
+  tags = { Name = "s3-gateway" }
+}
+
+resource "aws_vpc_endpoint" "ecr_dkr" {
+  vpc_id              = data.terraform_remote_state.network.outputs.vpc_id
+  service_name        = "com.amazonaws.${var.region}.ecr.dkr"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = data.terraform_remote_state.network.outputs.private_subnet_ids
+  security_group_ids  = [aws_security_group.endpoints.id]
+  private_dns_enabled = true
+}
+</code></pre>
+
+<p>
+    While I was there I added the S3 gateway endpoint and the ECR interface
+    endpoint. Pulling container images from ECR across the NAT was
+    responsible for another chunk of data transfer. Small fix, meaningful
+    saving, and now images pull faster too.
+</p>
+
+<h2>5. Orphaned EBS volumes and snapshots</h2>
+<p>
+    AWS charges you for unattached EBS volumes. Turns out if you spin up and
+    tear down enough test environments over two years, you end up with a lot
+    of them. I wrote a five-line AWS CLI loop, piped the output to a CSV,
+    asked the team if any of the ones older than 30 days were still needed,
+    deleted the rest.
+</p>
+
+<div class="filename">scripts/find-orphan-ebs.sh</div>
+<pre><code>#!/usr/bin/env bash
+aws ec2 describe-volumes \
+  --filters Name=status,Values=available \
+  --query 'Volumes[?CreateTime&lt;=`2024-01-01`].[VolumeId,Size,CreateTime,Tags[?Key==`Name`]|[0].Value]' \
+  --output table
+</code></pre>
+
+<p>Same for old snapshots. Same for old AMIs. Small dollar amounts individually, real money in aggregate. About $200/month recovered.</p>
+
+<h2>6. CloudWatch Logs retention</h2>
+<p>
+    Our default log group retention was <em>never expire</em>. Nobody had
+    set it. I audited the log groups and set retention per group based on a
+    simple rule: application logs, 30 days; audit-style logs, 1 year;
+    VPC/flow logs, 90 days. For the long-tail historical data we actually
+    needed to keep (compliance), I shipped it to S3 with Intelligent Tiering
+    and set CloudWatch retention to 30 days.
+</p>
+
+<div class="filename">terraform/modules/log-group/main.tf</div>
+<pre><code>resource "aws_cloudwatch_log_group" "this" {
+  name              = var.name
+  retention_in_days = var.retention_days  # default 30
+  kms_key_id        = var.kms_key_arn
+
+  tags = merge(var.tags, {
+    "cost-allocation" = var.cost_tag
+  })
+}
+</code></pre>
+
+<h2>What I didn&rsquo;t do</h2>
+<ul>
+    <li>I didn&rsquo;t touch RDS reserved instances until the next quarter. Reserved capacity is a commitment and I wanted the data layer to stabilise first.</li>
+    <li>I didn&rsquo;t go after every tiny line item. The bottom 8% of the bill wasn&rsquo;t worth my engineering time at that cost level. I noted them and moved on.</li>
+    <li>I didn&rsquo;t switch to Graviton yet. It&rsquo;s a good idea. It just needed a proper per-service test because some of our workloads link to native libs we hadn&rsquo;t built for arm64. That was next quarter&rsquo;s work.</li>
+</ul>
+
+<h2>How I kept it sustained</h2>
+<p>
+    The most common failure mode of a cost-cutting exercise is that costs
+    drift back up within six months. Two things I did to stop that:
+</p>
+<ol>
+    <li>
+        <strong>A weekly cost report that goes to the team.</strong> Simple
+        thing, generated from Cost Explorer, posted to Slack every Monday.
+        &ldquo;Last week vs the week before vs four weeks ago, per tag.&rdquo;
+        It makes cost visible. Visible things get cared about.
+    </li>
+    <li>
+        <strong>Budget alerts per cost-allocation tag.</strong> Each team has a
+        tag, each tag has a monthly budget, the budget sends a Slack
+        notification if we cross 80%. The goal isn&rsquo;t to punish; the goal
+        is to surface a change early.
+    </li>
+</ol>
+
+<p>
+    Six months later the bill was still within 3% of the new baseline, and
+    when it did move it was always explainable by a real new workload.
+    That&rsquo;s the actual success criterion. Not the headline number in
+    month one.
+</p>
+
+<hr>
+
+<p class="meta">Published February 2024.</p>
+
+</div>
+
+<footer class="site">
+    <span>&copy; Chibuike Onuoha</span>
+    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
+    <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
+</footer>
+
+</body>
+</html>
