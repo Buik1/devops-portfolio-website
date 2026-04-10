@@ -3,191 +3,432 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chibuike Onuoha · Senior DevOps &amp; SRE</title>
-<meta name="description" content="Chibuike Onuoha. Senior Cloud and Infrastructure Engineer. I run production Kubernetes for fintech, mostly on AWS. Based in Lagos, remote worldwide.">
-<link rel="stylesheet" href="css/style.css">
+<title>Chibuike Onuoha · DevOps &amp; Infrastructure</title>
+<meta name="description" content="Chibuike Onuoha. DevOps and Infrastructure Engineer. I run production Kubernetes for fintech on AWS. Based in Lagos, remote worldwide.">
+<link rel="stylesheet" href="css/dashboard.css">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 </head>
 <body>
 
-<nav class="top">
-    <a class="name" href="index.html">Chibuike Onuoha</a>
-    <a href="index.html" class="active">Home</a>
-    <a href="writing/">Writing</a>
-    <a href="about.html">About</a>
-    <a href="now.html">Now</a>
-    <a href="cv.html">CV</a>
-</nav>
+<button class="mobile-toggle" id="mobile-toggle">&#9776;</button>
 
-<div class="wrap">
+<div class="layout">
 
-<section class="hero">
-    <div class="kicker">Senior Cloud &amp; Infrastructure Engineer</div>
-    <h1>I run production like it&rsquo;s somebody&rsquo;s paycheque.</h1>
-    <p class="lede">
-        Because in fintech it usually is. I&rsquo;ve spent the last six years
-        keeping payment platforms on their feet with AWS, EKS, Terraform, and a
-        lot of boring, quiet ops work that nobody notices until it stops.
-    </p>
-    <div class="hero-meta">
-        <span>Lagos, Nigeria &nbsp;·&nbsp; WAT (UTC+1)</span>
-        <span>Open to remote worldwide</span>
-        <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
-        <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
-        <a href="cv.html">CV</a>
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="name">CHIBUIKE.CLOUD</div>
+        <div class="version">v1.0.0 &middot; eu-west-1</div>
     </div>
-</section>
 
-<hr>
+    <div class="sidebar-section">
+        <div class="sidebar-label">Overview</div>
+        <a class="sidebar-link active" href="#dashboard">
+            <span class="icon">&#9636;</span> Dashboard
+        </a>
+        <a class="sidebar-link" href="#infra">
+            <span class="icon">&#9881;</span> Infrastructure
+        </a>
+    </div>
 
-<h2>What I do, in plain words</h2>
-<p>
-    I look after the machines and pipelines that run a fintech transaction
-    platform. Day to day that means EKS clusters, Terraform modules, GitHub
-    Actions, ArgoCD, a lot of IAM, and a Grafana tab that&rsquo;s always open.
-    When something breaks at 2am, I&rsquo;m the one paging in. When something
-    doesn&rsquo;t break, it&rsquo;s usually because I already paged in at 2am
-    three weeks ago and quietly fixed the root cause.
-</p>
-<p>
-    I care about three things, in this order: reliability, cost, and the
-    developer experience of the engineers shipping on top of the platform. I
-    treat all three as measurable, and I grind the numbers down over time.
-</p>
+    <div class="sidebar-section">
+        <div class="sidebar-label">Services</div>
+        <a class="sidebar-link" href="#deployments">
+            <span class="icon">&#9654;</span> Deployments
+            <span class="badge">7</span>
+        </a>
+        <a class="sidebar-link" href="cv.html">
+            <span class="icon">&#128196;</span> Resume
+        </a>
+    </div>
 
-<h2>Selected work</h2>
-<p class="meta">A few things I&rsquo;ve built or fixed. Most of the details are stripped of proprietary names, but the decisions and numbers are real.</p>
+    <div class="sidebar-section">
+        <div class="sidebar-label">Observability</div>
+        <a class="sidebar-link" href="#health">
+            <span class="icon">&#128200;</span> Telemetry
+        </a>
+        <a class="sidebar-link" href="#activity">
+            <span class="icon">&#128220;</span> Event Log
+        </a>
+    </div>
 
-<ul class="case-list">
-    <li>
-        <div class="case-meta">Case study &nbsp;·&nbsp; Fintech &nbsp;·&nbsp; 2023</div>
-        <h3><a href="writing/eks-migration-zeeh.html">Migrating a fintech platform to EKS without a maintenance window</a></h3>
-        <p>
-            Thirty-odd services, one legacy EC2 fleet, zero planned downtime. How
-            we moved payments traffic to EKS in waves over eight weeks and came out
-            the other side with 40% fewer incidents and a 25% smaller bill.
-        </p>
-        <div class="tags"><span class="tag">eks</span><span class="tag">terraform</span><span class="tag">argocd</span><span class="tag">migration</span></div>
-    </li>
+    <div class="sidebar-section">
+        <div class="sidebar-label">System</div>
+        <a class="sidebar-link" href="#terminal">
+            <span class="icon">&gt;_</span> Terminal
+        </a>
+        <a class="sidebar-link" href="writing/">
+            <span class="icon">&#128209;</span> Case Studies
+        </a>
+    </div>
 
-    <li>
-        <div class="case-meta">Postmortem &nbsp;·&nbsp; Incident &nbsp;·&nbsp; 2024</div>
-        <h3><a href="writing/karpenter-incident.html">The 2am Karpenter incident: why our autoscaler made the outage worse</a></h3>
-        <p>
-            A peak-hour latency spike turned into 18 minutes of partial
-            unavailability because our HPA and Karpenter were fighting each other
-            under load. What the graphs said. What we actually changed.
-        </p>
-        <div class="tags"><span class="tag">karpenter</span><span class="tag">hpa</span><span class="tag">incident</span><span class="tag">postmortem</span></div>
-    </li>
+    <div class="sidebar-footer">
+        <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382" title="LinkedIn">LinkedIn</a>
+        <a href="mailto:bykonuoha@gmail.com" title="Email">Email</a>
+        <a href="about.html" title="About">About</a>
+    </div>
+</aside>
 
-    <li>
-        <div class="case-meta">Case study &nbsp;·&nbsp; Platform &nbsp;·&nbsp; 2023</div>
-        <h3><a href="writing/terraform-gitops-rollout.html">From click-ops to GitOps: rebuilding the deployment story in a quarter</a></h3>
-        <p>
-            Replacing a tangle of manual AWS console changes and half-working
-            Jenkins jobs with Terraform modules and an ArgoCD pull model. The
-            layout we landed on, the pieces I&rsquo;d change in hindsight.
-        </p>
-        <div class="tags"><span class="tag">terraform</span><span class="tag">gitops</span><span class="tag">github-actions</span></div>
-    </li>
+<!-- ═══ MAIN CONTENT ═══ -->
+<div class="main">
 
-    <li>
-        <div class="case-meta">Case study &nbsp;·&nbsp; Cost &nbsp;·&nbsp; 2024</div>
-        <h3><a href="writing/cost-25-percent.html">How we cut the AWS bill by a quarter without touching engineering velocity</a></h3>
-        <p>
-            Rightsizing is boring and it works. Spot instances plus Karpenter
-            consolidation, savings plans on the steady state, and one surprisingly
-            expensive NAT gateway that was quietly eating $900 a month.
-        </p>
-        <div class="tags"><span class="tag">finops</span><span class="tag">karpenter</span><span class="tag">rightsizing</span></div>
-    </li>
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="status-dot"></div>
+            <span class="topbar-status">All Systems Operational</span>
+        </div>
+        <div class="topbar-right">Control Plane &middot; eu-west-1 &middot; WAT (UTC+1)</div>
+    </div>
 
-    <li>
-        <div class="case-meta">Case study &nbsp;·&nbsp; Observability &nbsp;·&nbsp; 2023</div>
-        <h3><a href="writing/observability-stack.html">Picking an observability stack for a team of eight</a></h3>
-        <p>
-            Datadog or Prometheus plus Grafana plus Loki? We ran both for six
-            weeks. Here&rsquo;s what we kept, what we dropped, and the RED/USE
-            dashboards that ended up actually getting looked at.
-        </p>
-        <div class="tags"><span class="tag">datadog</span><span class="tag">prometheus</span><span class="tag">grafana</span><span class="tag">loki</span></div>
-    </li>
+    <div class="content" id="dashboard">
 
-    <li>
-        <div class="case-meta">Note &nbsp;·&nbsp; Security &nbsp;·&nbsp; 2024</div>
-        <h3><a href="writing/iam-least-privilege.html">IAM least privilege without losing your weekend</a></h3>
-        <p>
-            How I build IAM policies in practice. A workflow for going from
-            permissive starter policies to tight, auditable ones using
-            CloudTrail, IAM Access Analyzer, and a bit of patience.
-        </p>
-        <div class="tags"><span class="tag">iam</span><span class="tag">aws</span><span class="tag">security</span></div>
-    </li>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-top">
+            <div>
+                <h1>Chibuike Onuoha</h1>
+                <div class="title">DevOps &amp; Infrastructure Engineer &nbsp;|&nbsp; Cloud &nbsp;|&nbsp; SRE &nbsp;|&nbsp; Platform</div>
+                <div class="location">Lagos, Nigeria &nbsp;&middot;&nbsp; <span class="region">eu-west-1</span> &nbsp;&middot;&nbsp; Remote worldwide</div>
+            </div>
+            <div class="hero-actions">
+                <a class="btn primary" href="#deployments">View Deployments</a>
+                <a class="btn" href="#terminal">Open Terminal</a>
+            </div>
+        </div>
+    </section>
 
-    <li>
-        <div class="case-meta">Side project &nbsp;·&nbsp; 2024</div>
-        <h3><a href="writing/job-bot.html">Job Bot: a tiny personal ops project for finding remote roles</a></h3>
-        <p>
-            A small Node + SQLite tool I built for myself. Pulls remote DevOps
-            listings from half a dozen boards, scores them against my profile,
-            and drafts tailored CVs. Nothing fancy, but I use it every morning.
-        </p>
-        <div class="tags"><span class="tag">node</span><span class="tag">sqlite</span><span class="tag">gemini</span><span class="tag">side-project</span></div>
-    </li>
-</ul>
+    <!-- METRICS -->
+    <div class="metrics-grid" id="infra">
+        <div class="metric-card">
+            <div class="metric-header">
+                <span class="metric-label">Production Services</span>
+                <span class="metric-icon">&#128640;</span>
+            </div>
+            <div class="metric-value accent" data-count="30" data-suffix="+">0</div>
+            <div class="metric-trend">&#9650; running on EKS</div>
+            <div class="metric-desc">Microservices in production cluster</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-header">
+                <span class="metric-label">Terraform Resources</span>
+                <span class="metric-icon">&#9881;</span>
+            </div>
+            <div class="metric-value cyan" data-count="173" data-suffix="">0</div>
+            <div class="metric-trend">5 state files, 0 drift</div>
+            <div class="metric-desc">Managed infrastructure components</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-header">
+                <span class="metric-label">Uptime SLO</span>
+                <span class="metric-icon">&#128994;</span>
+            </div>
+            <div class="metric-value emerald" data-count="99.9" data-suffix="%">0</div>
+            <div class="metric-trend">payments-api target</div>
+            <div class="metric-desc">Availability over rolling 30 days</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-header">
+                <span class="metric-label">Annual Savings</span>
+                <span class="metric-icon">&#128176;</span>
+            </div>
+            <div class="metric-value purple" data-count="45" data-prefix="$" data-suffix="K+">0</div>
+            <div class="metric-trend">&#9660; 25% from baseline</div>
+            <div class="metric-desc">Cloud cost reduction, sustained</div>
+        </div>
+    </div>
 
-<h2>Stack I reach for</h2>
-<dl class="stack">
-    <dt>Cloud</dt>
-    <dd>AWS (EKS, EC2, VPC, IAM, KMS, Lambda, S3, CloudWatch, Secrets Manager). Some OCI. A bit of GCP where the job asks.</dd>
+    <!-- CONTENT GRID: DEPLOYMENTS + HEALTH -->
+    <div class="content-grid">
 
-    <dt>Containers</dt>
-    <dd>Kubernetes, Docker, Helm, Karpenter, Cluster Autoscaler, cert-manager, external-dns.</dd>
+        <!-- DEPLOYMENTS -->
+        <div id="deployments">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">Recent Deployments</div>
+                    <div class="section-subtitle">Production workloads &middot; last 12 months</div>
+                </div>
+                <a class="section-link" href="writing/">View all case studies &rarr;</a>
+            </div>
+            <div class="deploy-list">
 
-    <dt>IaC</dt>
-    <dd>Terraform (mostly). CloudFormation when I have to. Ansible for older boxes.</dd>
+                <a class="deploy-card" href="writing/eks-migration-zeeh.html">
+                    <div class="deploy-head">
+                        <span class="deploy-name">EKS Platform Migration</span>
+                        <span class="deploy-status running">Production</span>
+                    </div>
+                    <div class="deploy-desc">Migrated 30 fintech services from hand-managed EC2 to EKS in 8 weeks. Zero planned downtime. Dual-target-group ALB pattern with per-service canary weights.</div>
+                    <div class="deploy-tags">
+                        <span class="tag">EKS</span><span class="tag">Terraform</span><span class="tag">ArgoCD</span><span class="tag">Helm</span><span class="tag">Karpenter</span>
+                    </div>
+                    <div class="deploy-metrics">
+                        <div class="deploy-metric">uptime <span>99.95%</span></div>
+                        <div class="deploy-metric">incidents <span>-40%</span></div>
+                        <div class="deploy-metric">migration <span>8 weeks</span></div>
+                    </div>
+                </a>
 
-    <dt>CI / CD</dt>
-    <dd>GitHub Actions, Jenkins, ArgoCD, GitOps. I prefer pull-based deploys.</dd>
+                <a class="deploy-card" href="writing/terraform-gitops-rollout.html">
+                    <div class="deploy-head">
+                        <span class="deploy-name">GitOps Pipeline (ArgoCD + Terraform)</span>
+                        <span class="deploy-status running">Production</span>
+                    </div>
+                    <div class="deploy-desc">Replaced manual console ops with layered Terraform, GitHub Actions CI, and ArgoCD pull-based deployments. OIDC auth, no static credentials.</div>
+                    <div class="deploy-tags">
+                        <span class="tag">Terraform</span><span class="tag">ArgoCD</span><span class="tag">GitHub Actions</span><span class="tag">OIDC</span>
+                    </div>
+                    <div class="deploy-metrics">
+                        <div class="deploy-metric">deploy time <span>&lt;60s</span></div>
+                        <div class="deploy-metric">drift <span>0</span></div>
+                        <div class="deploy-metric">rollback <span>git revert</span></div>
+                    </div>
+                </a>
 
-    <dt>Observability</dt>
-    <dd>Datadog, Prometheus, Grafana, Loki, CloudWatch. OpenTelemetry where the app team will adopt it.</dd>
+                <a class="deploy-card" href="writing/cost-25-percent.html">
+                    <div class="deploy-head">
+                        <span class="deploy-name">AWS Cost Optimization</span>
+                        <span class="deploy-status running">Production</span>
+                    </div>
+                    <div class="deploy-desc">Cut the AWS bill by 25% in one quarter. Rightsizing, Karpenter consolidation, spot for batch, savings plans, and one NAT gateway that was eating $900/mo.</div>
+                    <div class="deploy-tags">
+                        <span class="tag">Karpenter</span><span class="tag">Spot</span><span class="tag">FinOps</span><span class="tag">S3</span>
+                    </div>
+                    <div class="deploy-metrics">
+                        <div class="deploy-metric">saved <span>$45K/yr</span></div>
+                        <div class="deploy-metric">nodes <span>42 &rarr; 27</span></div>
+                        <div class="deploy-metric">features cut <span>0</span></div>
+                    </div>
+                </a>
 
-    <dt>Scripting</dt>
-    <dd>Python and Bash. Go occasionally for small utilities.</dd>
+                <a class="deploy-card" href="writing/observability-stack.html">
+                    <div class="deploy-head">
+                        <span class="deploy-name">Observability Stack</span>
+                        <span class="deploy-status running">Production</span>
+                    </div>
+                    <div class="deploy-desc">Ran Datadog vs Prometheus+Grafana+Loki side by side for 6 weeks. Kept OSS for metrics/logs, Datadog for APM. 55% cost reduction.</div>
+                    <div class="deploy-tags">
+                        <span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">Loki</span><span class="tag">Datadog</span><span class="tag">Thanos</span>
+                    </div>
+                    <div class="deploy-metrics">
+                        <div class="deploy-metric">cost <span>-55%</span></div>
+                        <div class="deploy-metric">dashboards used <span>4</span></div>
+                        <div class="deploy-metric">alert rules <span>24</span></div>
+                    </div>
+                </a>
 
-    <dt>Opinions</dt>
-    <dd>Boring tech. Small blast radius. Runbooks before dashboards. Fix the on-call pain first, because a rested engineer is the cheapest reliability lever you have.</dd>
-</dl>
+                <a class="deploy-card" href="writing/karpenter-incident.html">
+                    <div class="deploy-head">
+                        <span class="deploy-name">Karpenter Autoscaling Fix</span>
+                        <span class="deploy-status running">Production</span>
+                    </div>
+                    <div class="deploy-desc">Fixed a race condition where HPA and Karpenter fought each other under load. 18min partial outage turned into a 3-line config change and a better SLO alert.</div>
+                    <div class="deploy-tags">
+                        <span class="tag">Karpenter</span><span class="tag">HPA</span><span class="tag">Postmortem</span><span class="tag">SLO</span>
+                    </div>
+                    <div class="deploy-metrics">
+                        <div class="deploy-metric">fix size <span>3 lines</span></div>
+                        <div class="deploy-metric">pod bind <span>75s &rarr; 18s</span></div>
+                        <div class="deploy-metric">recurrence <span>0</span></div>
+                    </div>
+                </a>
 
-<h2>Certifications</h2>
-<ul>
-    <li>Oracle Cloud Infrastructure Certified Multicloud Architect Professional</li>
-    <li>Oracle Cloud Infrastructure Certified Architect Associate</li>
-    <li>Oracle Cloud Infrastructure Certified Foundations Associate</li>
-    <li>Oracle Cloud Infrastructure Certified AI Foundations Associate</li>
-</ul>
+                <a class="deploy-card" href="writing/iam-least-privilege.html">
+                    <div class="deploy-head">
+                        <span class="deploy-name">IAM Security Hardening</span>
+                        <span class="deploy-status running">Production</span>
+                    </div>
+                    <div class="deploy-desc">IRSA for every workload, Access Analyzer for policy generation, explicit deny on destructive actions, quarterly drift audit. Passed 3 security reviews.</div>
+                    <div class="deploy-tags">
+                        <span class="tag">IAM</span><span class="tag">IRSA</span><span class="tag">KMS</span><span class="tag">Access Analyzer</span>
+                    </div>
+                    <div class="deploy-metrics">
+                        <div class="deploy-metric">service roles <span>12</span></div>
+                        <div class="deploy-metric">reviews passed <span>3</span></div>
+                        <div class="deploy-metric">shared creds <span>0</span></div>
+                    </div>
+                </a>
 
-<h2>Get in touch</h2>
-<p>
-    I&rsquo;m open to senior / staff remote roles, full-time or contract. Fintech,
-    developer tools, and infra-heavy SaaS are where I do my best work, but I&rsquo;m
-    not religious about it. The easiest way to reach me is
-    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>.
-    Expect a reply the same day.
-</p>
+                <a class="deploy-card" href="writing/job-bot.html">
+                    <div class="deploy-head">
+                        <span class="deploy-name">Job Bot</span>
+                        <span class="deploy-status active">Active</span>
+                    </div>
+                    <div class="deploy-desc">Personal ops tool. Scrapes 5 remote job boards into SQLite, scores against my profile, drafts tailored CVs via Gemini. Node, Express, no framework.</div>
+                    <div class="deploy-tags">
+                        <span class="tag">Node.js</span><span class="tag">SQLite</span><span class="tag">Gemini</span><span class="tag">Express</span>
+                    </div>
+                    <div class="deploy-metrics">
+                        <div class="deploy-metric">sources <span>5</span></div>
+                        <div class="deploy-metric">jobs/run <span>~4,500</span></div>
+                        <div class="deploy-metric">framework <span>none</span></div>
+                    </div>
+                </a>
 
-</div>
+            </div>
+        </div>
 
-<footer class="site">
-    <span>&copy; Chibuike Onuoha</span>
-    <span>Lagos &nbsp;·&nbsp; WAT</span>
-    <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
-    <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
-    <span class="sp"></span>
-    <a href="colophon.html">Colophon</a>
-</footer>
+        <!-- SYSTEM HEALTH -->
+        <div id="health">
+            <div class="health-panel">
+                <div class="health-top">
+                    <div class="section-title">System Health</div>
+                    <span class="health-badge">Optimal</span>
+                </div>
+                <div class="health-desc">Core infrastructure proficiency</div>
 
+                <div class="health-score">
+                    <div class="n" data-count="90" data-suffix="">0</div>
+                    <div class="lbl">Overall across 7 systems</div>
+                </div>
+
+                <div class="health-bars">
+                    <div class="health-bar-row">
+                        <span class="health-bar-label">AWS / Cloud</span>
+                        <div class="health-bar-track"><div class="health-bar-fill" data-width="95" style="background:var(--accent)"></div></div>
+                        <span class="health-bar-n">95</span>
+                    </div>
+                    <div class="health-bar-row">
+                        <span class="health-bar-label">Terraform / IaC</span>
+                        <div class="health-bar-track"><div class="health-bar-fill" data-width="93" style="background:var(--accent)"></div></div>
+                        <span class="health-bar-n">93</span>
+                    </div>
+                    <div class="health-bar-row">
+                        <span class="health-bar-label">Kubernetes</span>
+                        <div class="health-bar-track"><div class="health-bar-fill" data-width="92" style="background:var(--accent)"></div></div>
+                        <span class="health-bar-n">92</span>
+                    </div>
+                    <div class="health-bar-row">
+                        <span class="health-bar-label">CI/CD &amp; GitOps</span>
+                        <div class="health-bar-track"><div class="health-bar-fill" data-width="88" style="background:var(--emerald)"></div></div>
+                        <span class="health-bar-n">88</span>
+                    </div>
+                    <div class="health-bar-row">
+                        <span class="health-bar-label">Observability</span>
+                        <div class="health-bar-track"><div class="health-bar-fill" data-width="86" style="background:var(--emerald)"></div></div>
+                        <span class="health-bar-n">86</span>
+                    </div>
+                    <div class="health-bar-row">
+                        <span class="health-bar-label">Security / IAM</span>
+                        <div class="health-bar-track"><div class="health-bar-fill" data-width="84" style="background:var(--emerald)"></div></div>
+                        <span class="health-bar-n">84</span>
+                    </div>
+                    <div class="health-bar-row">
+                        <span class="health-bar-label">Python / Bash</span>
+                        <div class="health-bar-track"><div class="health-bar-fill" data-width="82" style="background:var(--cyan)"></div></div>
+                        <span class="health-bar-n">82</span>
+                    </div>
+                </div>
+
+                <div class="health-legend">
+                    <span><span class="legend-dot expert"></span> Expert (90+)</span>
+                    <span><span class="legend-dot advanced"></span> Advanced (80+)</span>
+                    <span><span class="legend-dot solid"></span> Solid (70+)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACTIVITY LOG -->
+    <section class="activity-section" id="activity">
+        <div class="section-header">
+            <div>
+                <div class="section-title">Event Log</div>
+                <div class="section-subtitle">audit.log &middot; last 12 months</div>
+            </div>
+        </div>
+        <div class="activity-list">
+            <div class="activity-row">
+                <span class="activity-type deploy">Deploy</span>
+                <span class="activity-msg">Payments API promoted to 100% on EKS (final wave)</span>
+                <span class="activity-cat">infrastructure</span>
+                <span class="activity-time">2024-02-15</span>
+            </div>
+            <div class="activity-row">
+                <span class="activity-type optimize">Optimize</span>
+                <span class="activity-msg">Karpenter consolidated cluster from 42 to 27 steady-state nodes</span>
+                <span class="activity-cat">platform</span>
+                <span class="activity-time">2024-02-01</span>
+            </div>
+            <div class="activity-row">
+                <span class="activity-type incident">Incident</span>
+                <span class="activity-msg">HPA/Karpenter race condition. 18min partial outage. 3-line fix.</span>
+                <span class="activity-cat">incident</span>
+                <span class="activity-time">2024-01-16</span>
+            </div>
+            <div class="activity-row">
+                <span class="activity-type config">Config</span>
+                <span class="activity-msg">Applied IAM least-privilege to 12 service roles via Access Analyzer</span>
+                <span class="activity-cat">security</span>
+                <span class="activity-time">2024-01-10</span>
+            </div>
+            <div class="activity-row">
+                <span class="activity-type optimize">Optimize</span>
+                <span class="activity-msg">NAT Gateway egress fix: S3 VPC endpoint + ECR endpoint. Saved $900/mo.</span>
+                <span class="activity-cat">cost</span>
+                <span class="activity-time">2024-01-05</span>
+            </div>
+            <div class="activity-row">
+                <span class="activity-type deploy">Deploy</span>
+                <span class="activity-msg">ArgoCD app-of-apps rollout to production cluster</span>
+                <span class="activity-cat">platform</span>
+                <span class="activity-time">2023-12-20</span>
+            </div>
+            <div class="activity-row">
+                <span class="activity-type config">Config</span>
+                <span class="activity-msg">Prometheus + Grafana + Loki stack deployed to observability namespace</span>
+                <span class="activity-cat">observability</span>
+                <span class="activity-time">2023-11-15</span>
+            </div>
+            <div class="activity-row">
+                <span class="activity-type milestone">Milestone</span>
+                <span class="activity-msg">Zero-downtime EKS migration complete. 30 services, 8 weeks, 0 planned outage.</span>
+                <span class="activity-cat">infrastructure</span>
+                <span class="activity-time">2023-11-01</span>
+            </div>
+            <div class="activity-row">
+                <span class="activity-type scale">Scale</span>
+                <span class="activity-msg">Spot NodePool enabled for batch workloads. 65% savings on worker fleet.</span>
+                <span class="activity-cat">platform</span>
+                <span class="activity-time">2023-10-20</span>
+            </div>
+            <div class="activity-row">
+                <span class="activity-type deploy">Deploy</span>
+                <span class="activity-msg">GitHub Actions OIDC federation live. Killed the shared IAM admin user.</span>
+                <span class="activity-cat">security</span>
+                <span class="activity-time">2023-09-15</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- TERMINAL -->
+    <section class="terminal-section" id="terminal">
+        <div class="section-header">
+            <div>
+                <div class="section-title">Terminal</div>
+                <div class="section-subtitle">chibuike@cloud:~$ &middot; try <code style="color:var(--accent);background:var(--accent-soft);padding:1px 6px;border-radius:3px;font-size:12px">help</code></div>
+            </div>
+        </div>
+        <div class="terminal">
+            <div class="terminal-bar">
+                <span class="terminal-dot r"></span>
+                <span class="terminal-dot y"></span>
+                <span class="terminal-dot g"></span>
+                <span class="terminal-title">chibuike@cloud: ~</span>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-output" id="term-output"></div>
+                <div class="terminal-input-row">
+                    <span class="terminal-prompt">chibuike@cloud:~$ </span>
+                    <input class="terminal-input" id="term-input" type="text" autocomplete="off" spellcheck="false" autofocus>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </div><!-- .content -->
+</div><!-- .main -->
+</div><!-- .layout -->
+
+<script src="js/dashboard.js"></script>
 </body>
 </html>

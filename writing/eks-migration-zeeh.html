@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Migrating a fintech platform to EKS without a maintenance window · Chibuike Onuoha</title>
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/article.css">
 </head>
 <body>
 
-<nav class="top">
-    <a class="name" href="../index.html">Chibuike Onuoha</a>
+<nav class="topnav">
+    <a class="brand" href="../index.html">CHIBUIKE.CLOUD</a>
     <a href="../index.html">Home</a>
     <a href="index.html" class="active">Writing</a>
     <a href="../about.html">About</a>
@@ -17,7 +17,7 @@
     <a href="../cv.html">CV</a>
 </nav>
 
-<div class="wrap">
+<div class="article">
 
 <div class="kicker">Case study &nbsp;·&nbsp; Fintech &nbsp;·&nbsp; Published Nov 2023</div>
 <h1 class="page">Migrating a fintech platform to EKS without a maintenance window</h1>
@@ -71,14 +71,14 @@
 <figure>
 <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Architecture diagram showing Route53 and ALB fronting two target groups: legacy EC2 fleet and EKS cluster with Karpenter-managed nodes">
   <defs>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1c4a7a"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e8a838"/></marker>
   </defs>
   <style>
-    .box { fill: #f6f3ee; stroke: #1c4a7a; stroke-width: 1.5; }
-    .box2 { fill: #eaf0f8; stroke: #1c4a7a; stroke-width: 1.5; }
-    .lbl { font: 13px -apple-system, Segoe UI, sans-serif; fill: #1a1a1a; }
-    .lbl2 { font: 11px "SF Mono", Menlo, monospace; fill: #5a5a5a; }
-    .line { stroke: #1c4a7a; stroke-width: 1.5; fill: none; }
+    .box { fill: #111720; stroke: #e8a838; stroke-width: 1.5; }
+    .box2 { fill: #161c28; stroke: #e8a838; stroke-width: 1.5; }
+    .lbl { font: 13px -apple-system, Segoe UI, sans-serif; fill: #e2e6f0; }
+    .lbl2 { font: 11px "SF Mono", Menlo, monospace; fill: #6b7a94; }
+    .line { stroke: #e8a838; stroke-width: 1.5; fill: none; }
     .dash { stroke-dasharray: 4 4; }
   </style>
   <rect class="box" x="310" y="20" width="120" height="36" rx="4"/>
@@ -92,9 +92,9 @@
   <rect class="box2" x="60" y="184" width="240" height="120" rx="6"/>
   <text class="lbl" x="180" y="204" text-anchor="middle">Legacy EC2 fleet (old)</text>
   <text class="lbl2" x="180" y="222" text-anchor="middle">ASG · Packer AMI · Jenkins</text>
-  <rect x="80" y="236" width="60" height="26" rx="3" fill="#fff" stroke="#5a5a5a"/>
-  <rect x="150" y="236" width="60" height="26" rx="3" fill="#fff" stroke="#5a5a5a"/>
-  <rect x="220" y="236" width="60" height="26" rx="3" fill="#fff" stroke="#5a5a5a"/>
+  <rect x="80" y="236" width="60" height="26" rx="3" fill="#0c1018" stroke="#4e5a70"/>
+  <rect x="150" y="236" width="60" height="26" rx="3" fill="#0c1018" stroke="#4e5a70"/>
+  <rect x="220" y="236" width="60" height="26" rx="3" fill="#0c1018" stroke="#4e5a70"/>
   <text class="lbl2" x="110" y="252" text-anchor="middle">svc-a</text>
   <text class="lbl2" x="180" y="252" text-anchor="middle">svc-b</text>
   <text class="lbl2" x="250" y="252" text-anchor="middle">svc-c</text>
@@ -102,9 +102,9 @@
   <rect class="box2" x="440" y="184" width="240" height="120" rx="6"/>
   <text class="lbl" x="560" y="204" text-anchor="middle">EKS cluster (new)</text>
   <text class="lbl2" x="560" y="222" text-anchor="middle">Karpenter · ArgoCD · Helm</text>
-  <rect x="460" y="236" width="60" height="26" rx="3" fill="#fff" stroke="#1c4a7a"/>
-  <rect x="530" y="236" width="60" height="26" rx="3" fill="#fff" stroke="#1c4a7a"/>
-  <rect x="600" y="236" width="60" height="26" rx="3" fill="#fff" stroke="#1c4a7a"/>
+  <rect x="460" y="236" width="60" height="26" rx="3" fill="#0c1018" stroke="#e8a838"/>
+  <rect x="530" y="236" width="60" height="26" rx="3" fill="#0c1018" stroke="#e8a838"/>
+  <rect x="600" y="236" width="60" height="26" rx="3" fill="#0c1018" stroke="#e8a838"/>
   <text class="lbl2" x="490" y="252" text-anchor="middle">svc-a</text>
   <text class="lbl2" x="560" y="252" text-anchor="middle">svc-b</text>
   <text class="lbl2" x="630" y="252" text-anchor="middle">svc-c</text>
@@ -367,7 +367,7 @@ spec:
 
 </div>
 
-<footer class="site">
+<footer class="site-footer">
     <span>&copy; Chibuike Onuoha</span>
     <a href="mailto:bykonuoha@gmail.com">bykonuoha@gmail.com</a>
     <a href="https://linkedin.com/in/chibuike-onuoha-7b5aa7382">LinkedIn</a>
