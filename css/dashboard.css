@@ -723,6 +723,89 @@ body::before {
     .hero h1 { font-size: 22px; }
 }
 
+/* ─── EXPERIENCE BANNER ─── */
+.experience-banner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--bg-card);
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+}
+.exp-number {
+    font-family: var(--mono);
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    min-width: 80px;
+}
+.exp-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+}
+.exp-sub {
+    font-size: 13px;
+    color: var(--text-dim);
+}
+
+/* ─── SKILLS SECTION ─── */
+.skills-section {
+    margin-bottom: 20px;
+}
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+.skill-group {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+}
+.skill-group-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+}
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.skill-tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 3px 10px;
+    background: var(--bg-panel);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+.skill-tag.primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    font-weight: 500;
+}
+@media (max-width: 768px) {
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    .experience-banner { padding: 18px 20px; }
+    .exp-number { font-size: 40px; }
+}
+@media (max-width: 480px) {
+    .skills-grid { grid-template-columns: 1fr; }
+    .experience-banner { flex-direction: column; text-align: center; }
+}
+
 /* ─── PRINT ─── */
 @media print {
     .sidebar, .topbar, .terminal-section, .mobile-toggle { display: none; }
