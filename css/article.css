@@ -1,21 +1,21 @@
-/* Article pages — dark theme matching dashboard */
+/* Article pages — clean black and white matching dashboard */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-    --bg-root: #060810;
-    --bg-panel: #0c1018;
-    --bg-card: #111720;
-    --border: #1a2235;
-    --text: #e2e6f0;
-    --text-muted: #8a94aa;
-    --text-dim: #4e5a70;
-    --accent: #e8a838;
-    --accent-soft: rgba(232,168,56,0.08);
-    --emerald: #34d399;
-    --emerald-soft: rgba(52,211,153,0.08);
-    --cyan: #22d3ee;
-    --purple: #a78bfa;
-    --red: #f87171;
+    --bg-root: #ffffff;
+    --bg-panel: #f5f5f5;
+    --bg-card: #ffffff;
+    --border: #e0e0e0;
+    --text: #111;
+    --text-muted: #555;
+    --text-dim: #888;
+    --accent: #111;
+    --accent-soft: rgba(0,0,0,0.04);
+    --emerald: #333;
+    --emerald-soft: rgba(0,0,0,0.04);
+    --cyan: #444;
+    --purple: #555;
+    --red: #666;
     --mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
     --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --serif: Charter, 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
@@ -32,12 +32,7 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-size: 24px 24px;
-    pointer-events: none;
+    display: none;
 }
 
 /* NAV */
